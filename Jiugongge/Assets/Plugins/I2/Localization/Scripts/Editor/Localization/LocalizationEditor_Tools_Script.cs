@@ -25,7 +25,7 @@ namespace I2.Loc
 			//GUILayout.Space (5);
 			
 			GUI.backgroundColor = Color.Lerp (Color.gray, Color.white, 0.2f);
-			GUILayout.BeginVertical("AS TextArea", GUILayout.Height(1));
+			GUILayout.BeginVertical("TextArea", GUILayout.Height(1));
 			GUI.backgroundColor = Color.white;
 			
 			EditorGUILayout.HelpBox("This tool creates the ScriptLocalization.cs with the selected terms.\nThis allows for Compile Time Checking on the used Terms referenced in scripts", UnityEditor.MessageType.Info);

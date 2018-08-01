@@ -34,7 +34,7 @@ namespace I2.Loc
 		void OnGUI_KeyList_ShowKeyDetails()
 		{
 			GUI.backgroundColor = Color.Lerp(Color.blue, Color.white, 0.9f);
-			GUILayout.BeginVertical("AS TextArea", GUILayout.Height(1));
+			GUILayout.BeginVertical("TextArea", GUILayout.Height(1));
 			OnGUI_Keys_Languages(mKeyToExplore, null);
 			
 			GUILayout.BeginHorizontal();
@@ -179,7 +179,7 @@ namespace I2.Loc
 			OnGUI_Keys_Language_SpecializationsBar ();
 
 			//--[ Languages ]---------------------------
-			GUILayout.BeginVertical ("AS TextArea", GUILayout.Height (1));
+			GUILayout.BeginVertical ("TextArea", GUILayout.Height (1));
 
 				OnGUI_Keys_LanguageTranslations (Key, localizeCmp, IsPrimaryKey, ref termdata, source);
 
@@ -419,7 +419,7 @@ namespace I2.Loc
 					if (bShowTranslationLabel)
 					{
 						GUI.backgroundColor=GUITools.DarkGray;
-						GUILayout.BeginVertical("AS TextArea", GUILayout.Height(1));
+						GUILayout.BeginVertical("TextArea", GUILayout.Height(1));
 						GUILayout.Space(2);
 						
 						GUI.backgroundColor = Color.white;

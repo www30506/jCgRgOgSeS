@@ -48,7 +48,7 @@ namespace I2.Loc
 			GUILayout.Space(20);
 
 			GUI.backgroundColor = Color.Lerp(Color.gray, Color.white, 0.5f);
-			GUILayout.BeginVertical("AS TextArea", GUILayout.Height (1));
+			GUILayout.BeginVertical("TextArea", GUILayout.Height (1));
 			GUI.backgroundColor = Color.white;
 				GUILayout.Space(10);
 				OnGUI_GoogleSpreadsheetsInGDrive();
@@ -60,7 +60,7 @@ namespace I2.Loc
 				int time = (int)((Time.realtimeSinceStartup % 2) * 2.5);
 				string Loading = mConnection_Text + ".....".Substring(0, time);
 				GUI.color = Color.gray;
-				GUILayout.BeginHorizontal("AS TextArea");
+				GUILayout.BeginHorizontal("TextArea");
 				GUILayout.Label (Loading, EditorStyles.miniLabel);
 				GUI.color = Color.white;
 				if (GUILayout.Button("Cancel", EditorStyles.toolbarButton, GUILayout.ExpandWidth(false)))
@@ -295,7 +295,7 @@ namespace I2.Loc
 		eSpreadsheetUpdateMode SynchronizationButtons( string Operation, bool ForceReplace = false )
 		{
 			eSpreadsheetUpdateMode Result = eSpreadsheetUpdateMode.None;
-			GUILayout.BeginVertical("AS TextArea", GUILayout.Width (1));
+			GUILayout.BeginVertical("TextArea", GUILayout.Width (1));
 			GUI.backgroundColor = Color.white;
 
 				GUILayout.BeginHorizontal();

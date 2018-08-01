@@ -51,13 +51,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 488051eaa73ba421e8fe4868f2e0f364, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Google_WebServiceURL: 
-  Google_SpreadsheetKey: 
-  Google_SpreadsheetName: 
-  Google_LastUpdatedVersion: 
+  Google_WebServiceURL: https://script.google.com/macros/s/AKfycbyDxZxMGOEaWFDozbSsncMurGvYea1HB7o4-MzpcH7BhHVIHUIV/exec
+  Google_SpreadsheetKey: 1hwZL-8WyFZZAcHN72DXVngjGnzRLj9iAIwsEI_HEZ30
+  Google_SpreadsheetName: I2Loc Jiugongge Localization
+  Google_LastUpdatedVersion: 1533135689250
   GoogleUpdateFrequency: 3
-  mTerms: []
-  mLanguages: []
+  mTerms:
+  - Term: Menu_Setting
+    TermType: 0
+    Description: 
+    Languages:
+    - Setting
+    - "\u8A2D\u5B9A"
+    - "\u8BBE\u5B9A"
+    Languages_Touch:
+    - 
+    - 
+    - 
+    Flags: 000000
+  mLanguages:
+  - Name: English
+    Code: en
+  - Name: TraditionalChinese
+    Code: 
+  - Name: SimplifiedChinese
+    Code: 
   CaseInsensitiveTerms: 0
   Assets: []
   NeverDestroy: 1

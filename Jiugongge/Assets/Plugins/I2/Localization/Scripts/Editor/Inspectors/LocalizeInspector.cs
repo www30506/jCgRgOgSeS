@@ -435,7 +435,7 @@ namespace I2.Loc
 
 			bool bChanged = false;
 			GUI.backgroundColor = Color.gray;
-			GUILayout.BeginVertical ("AS TextArea");
+			GUILayout.BeginVertical ("TextArea");
 			for (int i = 0, imax = Mathf.Min (nTerms, 3); i < imax; ++i) 
 			{
 				ParsedTerm parsedTerm;
@@ -739,7 +739,7 @@ namespace I2.Loc
 			get{
 				if (mGUIStyle_Background==null)
 				{
-					mGUIStyle_Background = new GUIStyle("AS TextArea");
+					mGUIStyle_Background = new GUIStyle("TextArea");
 					mGUIStyle_Background.overflow.left = 50;
 					mGUIStyle_Background.overflow.right = 50;
 					mGUIStyle_Background.overflow.top = -5;

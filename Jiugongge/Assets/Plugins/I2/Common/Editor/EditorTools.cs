@@ -31,7 +31,7 @@ namespace I2
 			if (state)
 			{
 				GUI.backgroundColor=DarkGray;
-				GUILayout.BeginVertical("AS TextArea", GUILayout.Height(1));
+				GUILayout.BeginVertical("TextArea", GUILayout.Height(1));
 				GUILayout.BeginHorizontal();
 				if (!string.IsNullOrEmpty(text))
 					state = GUILayout.Toggle(state, text, Style, GUILayout.ExpandWidth(true));
@@ -82,7 +82,7 @@ namespace I2
 	
 		static public void BeginContents ()
 		{
-			EditorGUILayout.BeginHorizontal("AS TextArea", GUILayout.MinHeight(10f));
+			EditorGUILayout.BeginHorizontal("TextArea", GUILayout.MinHeight(10f));
 			GUILayout.Space(2f);
 			EditorGUILayout.BeginVertical();
 			GUILayout.Space(2f);
@@ -147,7 +147,7 @@ namespace I2
 		static public int DrawShadowedTabs( int Index, string[] Tabs, int height = 25, bool expand=true )
 		{
 			GUI.backgroundColor=Color.Lerp (Color.gray, Color.white, 0.2f);
-			GUILayout.BeginVertical("AS TextArea", GUILayout.Height(1));
+			GUILayout.BeginVertical("TextArea", GUILayout.Height(1));
 				GUI.backgroundColor=Color.white;
 				GUILayout.Space(2);
 				Index = DrawTabs( Index, Tabs, height: height, expand:expand );

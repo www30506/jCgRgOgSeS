@@ -392,7 +392,7 @@ namespace I2
 		{
 			LoadPluginsData();
 
-			GUIStyle mGUIStyle_Background = new GUIStyle("AS TextArea");
+			GUIStyle mGUIStyle_Background = new GUIStyle("TextArea");
 			mGUIStyle_Background.overflow.left = 50;
 			mGUIStyle_Background.overflow.right = 50;
 			mGUIStyle_Background.overflow.top = 50;
@@ -469,7 +469,7 @@ namespace I2
 				Repaint();
 
 				GUI.color = Color.gray;
-				GUILayout.BeginHorizontal("AS TextArea");
+				GUILayout.BeginHorizontal("TextArea");
 					GUI.color = Color.white;
 					GUILayout.Label (Loading, EditorStyles.miniLabel);
 				GUILayout.EndHorizontal();

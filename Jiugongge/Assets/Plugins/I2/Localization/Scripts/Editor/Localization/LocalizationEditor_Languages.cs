@@ -39,7 +39,7 @@ namespace I2.Loc
 			int IndexLanguageToDelete = -1;
 			int LanguageToMoveUp = -1;
 			int LanguageToMoveDown = -1;
-			mScrollPos_Languages = GUILayout.BeginScrollView( mScrollPos_Languages, "AS TextArea", GUILayout.MinHeight (100), GUILayout.MaxHeight(Screen.height), GUILayout.ExpandHeight(false));
+			mScrollPos_Languages = GUILayout.BeginScrollView( mScrollPos_Languages, "TextArea", GUILayout.MinHeight (100), GUILayout.MaxHeight(Screen.height), GUILayout.ExpandHeight(false));
 
 			List<string> codes = GoogleLanguages.GetAllInternationalCodes();
 			codes.Sort();

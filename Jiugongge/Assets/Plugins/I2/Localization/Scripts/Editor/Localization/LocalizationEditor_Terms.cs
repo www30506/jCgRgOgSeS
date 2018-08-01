@@ -58,7 +58,7 @@ namespace I2.Loc
 			GUILayout.EndHorizontal();
 
 			//--[ Keys List ]-----------------------------------------
-			mScrollPos_Keys = GUILayout.BeginScrollView( mScrollPos_Keys, false, false, "horizontalScrollbar", "verticalScrollbar", "AS TextArea", GUILayout.MinHeight(Height), GUILayout.MaxHeight(Screen.height), GUILayout.ExpandHeight(false));
+			mScrollPos_Keys = GUILayout.BeginScrollView( mScrollPos_Keys, false, false, "horizontalScrollbar", "verticalScrollbar", "TextArea", GUILayout.MinHeight(Height), GUILayout.MaxHeight(Screen.height), GUILayout.ExpandHeight(false));
 
 			bool bAnyValidUsage = false;
 
@@ -207,7 +207,7 @@ namespace I2.Loc
 			if (mKeyToExplore == FullKey) 
 			{
 				GUI.backgroundColor = Color.Lerp (Color.blue, Color.white, 0.8f);
-				if (GUI.Button (rectKey, new GUIContent (sKey, EditorStyles.foldout.onNormal.background), "AS TextArea")) 
+				if (GUI.Button (rectKey, new GUIContent (sKey, EditorStyles.foldout.onNormal.background), "TextArea")) 
 				{
 					mKeyToExplore = string.Empty;
 					ClearErrors ();

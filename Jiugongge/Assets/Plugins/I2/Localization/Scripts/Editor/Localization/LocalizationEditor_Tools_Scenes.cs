@@ -48,7 +48,7 @@ namespace I2.Loc
 			}
 			OnGUI_ScenesList_TitleBar();
 
-			mScrollPos_BuildScenes = GUILayout.BeginScrollView( mScrollPos_BuildScenes, "AS TextArea", GUILayout.Height ( SmallSize ? 100 : 200));
+			mScrollPos_BuildScenes = GUILayout.BeginScrollView( mScrollPos_BuildScenes, "TextArea", GUILayout.Height ( SmallSize ? 100 : 200));
 			
 			for (int i=0, imax=sceneList.Count; i<imax; ++i)
 			{

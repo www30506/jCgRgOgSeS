@@ -20,7 +20,7 @@ namespace I2.Loc
 			OnGUI_ScenesList(true);
 			
 			GUI.backgroundColor = Color.Lerp (Color.gray, Color.white, 0.2f);
-			GUILayout.BeginVertical("AS TextArea", GUILayout.Height(1));
+			GUILayout.BeginVertical("TextArea", GUILayout.Height(1));
 				GUI.backgroundColor = Color.white;
 				GUILayout.Space (5);
 				
@@ -37,7 +37,7 @@ namespace I2.Loc
 		{
 			GUILayout.Label("Change Category of the following Terms:", EditorStyles.toolbarButton, GUILayout.ExpandWidth(true));
 
-			mScrollPos_CategorizedKeys = GUILayout.BeginScrollView( mScrollPos_CategorizedKeys, "AS TextArea", GUILayout.Height ( 100));
+			mScrollPos_CategorizedKeys = GUILayout.BeginScrollView( mScrollPos_CategorizedKeys, "TextArea", GUILayout.Height ( 100));
 			
 			if (mSelectedKeys.Count==0)
 			{
