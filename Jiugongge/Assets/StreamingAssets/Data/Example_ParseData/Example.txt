@@ -1,0 +1,6 @@
+﻿key	id	name	price	des
+name	編號	名稱	價格	敘述
+type	label	string	int	string
+1	1	克羅	99	奇怪的東西
+2	2	希司	999	奇怪的東西II
+3	3	雙	300	a1

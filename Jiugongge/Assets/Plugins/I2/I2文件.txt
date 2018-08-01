@@ -1,0 +1,5 @@
+﻿連結Google方法 http://inter-illusion.com/tools/i2-localization/how-to-link-with-google
+
+設定成語言	I2.Loc.LocalizationManager.CurrentLanguage = "languageName";
+
+程式碼取得	print(I2.Loc.ScriptLocalization.Get("key"));
