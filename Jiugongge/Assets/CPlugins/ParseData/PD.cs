@@ -23,6 +23,7 @@ public class PD : MonoBehaviour {
 
 	void Awake () {
 		Init();
+		DontDestroyOnLoad (this.gameObject);
 	}
 
 	//這個接口是給 EditorWindow建立使用
