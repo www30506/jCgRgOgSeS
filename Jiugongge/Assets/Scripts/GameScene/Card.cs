@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Card : MonoBehaviour {
+	[SerializeField]private SpriteRenderer m_SpriteRenderer;
 	[SerializeField]private int positionIndex;
 	[SerializeField]private string cardID;
 	[SerializeField]private int m_value;
@@ -28,6 +29,8 @@ public class Card : MonoBehaviour {
 		m_value = int.Parse(PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString());
 		m_type = PD.DATA ["CardTable"] [p_cardID] ["Type"].ToString();
 		m_name = PD.DATA ["CardTable"] [p_cardID] ["Name"].ToString();
+		m_SpriteRenderer.sprite = Resources.Load<Sprite> ("Textures/Cards/" + p_cardID);
+		print("Textures/Cards/" + p_cardID);
 		this.gameObject.name = p_cardID;
 		SetPosition(p_positionIndex);
 	}
