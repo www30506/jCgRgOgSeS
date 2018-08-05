@@ -18,12 +18,13 @@ public class PD : MonoBehaviour {
 	}
 	public static Dictionary<string, Dictionary<string, Dictionary<string, object>>> DATA;
 	private Dictionary<string, Dictionary<string, Dictionary<string, object>>> data;
+	public static Dictionary<string, Dictionary<string, Dictionary<string, object>>> DEFINEDATA;
+	private Dictionary<string, Dictionary<string, Dictionary<string, object>>> defineData;
 	public FileClass[] m_file;
 	private static PD instance;
 
 	void Awake () {
 		Init();
-		DontDestroyOnLoad (this.gameObject);
 	}
 
 	//這個接口是給 EditorWindow建立使用
@@ -41,6 +42,20 @@ public class PD : MonoBehaviour {
 	private void Init(){
 		data = null;
 		data = new Dictionary<string, Dictionary<string, Dictionary<string, object>>>();
+		defineData = new Dictionary<string, Dictionary<string, Dictionary<string, object>>>();
+
+		//DefineData
+		for (int i = 0; i < m_file.Length; i++) {
+			FileStream file = new FileStream(Application.streamingAssetsPath + "/" + m_file[i].m_path + "/" + m_file[i].m_name + ".txt", FileMode.Open, FileAccess.Read);
+			StreamReader sr = new StreamReader(file);
+			DoParseDefineData(i, sr.ReadToEnd());
+			file.Close();
+			sr.Close();
+		}
+		PD.DEFINEDATA = defineData;
+
+
+		//Data
 		for (int i = 0; i < m_file.Length; i++) {
 			FileStream file = new FileStream(Application.streamingAssetsPath + "/" + m_file[i].m_path + "/" + m_file[i].m_name + ".txt", FileMode.Open, FileAccess.Read);
 			StreamReader sr = new StreamReader(file);
@@ -79,6 +94,21 @@ public class PD : MonoBehaviour {
 
 		FileStream file = new FileStream(Application.streamingAssetsPath + "/" + _path + "/" + _name + ".txt", FileMode.Create, FileAccess.Write);
 		StreamWriter sw = new StreamWriter(file, Encoding.UTF8);
+		//寫入Define
+		foreach(string _key in defineData[p_key].Keys){
+			string _writeLineStr = "";
+			int _key_II_Count = 0;
+
+			foreach(string _key_II in defineData[p_key][_key].Keys){
+				_writeLineStr += defineData[p_key][_key][_key_II].ToString();
+
+				if(++_key_II_Count < defineData[p_key][_key].Count){
+					_writeLineStr +="\t";
+				}
+			}
+
+			sw.WriteLine(_writeLineStr);
+		}
 
 		//寫入 key查詢
 		foreach(string _key in p_data.Keys){
@@ -123,10 +153,11 @@ public class PD : MonoBehaviour {
 
 	private void DoParse(int p_number, string p_data){
 		Dictionary<string, Dictionary<string, object>> data_2 = new Dictionary<string, Dictionary<string, object>>();
+		int _startCount = defineData[m_file[p_number].m_name].Count;
 
 		string[] _allLine = p_data.Split('\n');
 
-		string[] _keyData = _allLine[0].Split('\t');
+		string[] _keyData = _allLine[_startCount].Split('\t');
 		string[] _typeKey = new string[_keyData.Length];
 
 		for (int i = 0; i < _keyData.Length; i++) {
@@ -134,7 +165,7 @@ public class PD : MonoBehaviour {
 			_typeKey [i] = _keyData [i];
 		}
 
-		for(int i=1; i< _allLine.Length; i++){
+		for(int i=_startCount+1; i< _allLine.Length; i++){
 			char[] _chardata = _allLine[i].ToCharArray();
 
 			if( _chardata.Length < 1) continue;
@@ -152,5 +183,42 @@ public class PD : MonoBehaviour {
 		}
 
 		data.Add (m_file[p_number].m_name, data_2);
+	}
+
+	private void DoParseDefineData(int p_number, string p_data){
+		Dictionary<string, Dictionary<string, object>> _data_2 = new Dictionary<string, Dictionary<string, object>>();
+
+		string[] _allLine = p_data.Split('\n');
+		string[] _key = null;
+		//紀錄 key
+		for(int i=0; i< _allLine.Length; i++){
+			string _str = _allLine[i].ToLower();
+			if(_str.Contains("[define]")) 
+				continue;
+
+			_key = _allLine[i].Split('\t');
+			break;
+		}
+
+		//DefineData
+		int _count = 0;
+
+		for(int i=0; i< _allLine.Length; i++){
+			string _str = _allLine[i].ToLower();
+			if(_str.Contains("[define]")){
+				string[] _strData = _allLine[i].Split('\t');
+				Dictionary<string, object> _data = new Dictionary<string, object> ();
+
+				for(int j=0; j<_strData.Length; j++){
+					_strData[j] = Regex.Replace(_strData[j], "\\s", "");
+					_data.Add (_key [j], _strData [j]);
+				}
+
+				_data_2.Add(_count.ToString(), _data);
+				_count++;
+			}
+		}
+
+		defineData.Add(m_file[p_number].m_name, _data_2);
 	}
 }
