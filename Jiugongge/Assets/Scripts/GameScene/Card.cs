@@ -5,6 +5,9 @@ using UnityEngine;
 public class Card : MonoBehaviour {
 	[SerializeField]private int positionIndex;
 	[SerializeField]private string cardID;
+	[SerializeField]private int m_value;
+	[SerializeField]private string m_type;
+	[SerializeField]private string m_name;
 	private Transform thisTransform;
 
 	void Awake(){
@@ -22,6 +25,9 @@ public class Card : MonoBehaviour {
 	public void Init(string p_cardID,int p_positionIndex){
 		positionIndex = p_positionIndex;
 		cardID = p_cardID;
+		m_value = int.Parse(PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString());
+		m_type = PD.DATA ["CardTable"] [p_cardID] ["Type"].ToString();
+		m_name = PD.DATA ["CardTable"] [p_cardID] ["Name"].ToString();
 		this.gameObject.name = p_cardID;
 		SetPosition(p_positionIndex);
 	}

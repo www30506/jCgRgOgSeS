@@ -65,7 +65,7 @@ public class GameSystem : MonoBehaviour {
 
 	private void CreateCards(){
 		for(int i=0; i< 9; i++){
-			CreateCard((i+1).ToString(), i);
+			CreateCard((i).ToString(), i);
 		}
 	}
 
