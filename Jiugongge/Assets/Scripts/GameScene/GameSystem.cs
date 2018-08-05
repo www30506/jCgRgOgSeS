@@ -68,4 +68,8 @@ public class GameSystem : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	public void BackToMenu(){
+		Game.LoadScene ("MenuScene");
+	}
 }
