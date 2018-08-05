@@ -16,6 +16,10 @@ public class GameSystem : MonoBehaviour {
 		LoadLevelData();
 		CreateCardPool();
 		CreateCards();
+
+//		for (int i = 0; i < PD.DATA ["CardTable"].Count; i++) {
+//			print (PD.DATA ["CardTable"] [i.ToString ()] ["Type"]);
+//		}
 	}
 
 	private void LoadLevelData(){

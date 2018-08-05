@@ -1,0 +1,14 @@
+[define]name	編號	名稱	類型	數值
+[define]type	string	string	string	string
+key	ID	Name	Type	Value
+0	0	數字0	Base	0
+1	1	數字1	Base	1
+2	2	數字2	Base	2
+3	3	數字3	Base	3
+4	4	數字4	Base	4
+5	5	數字5	Base	5
+6	6	數字6	Base	6
+7	7	數字7	Base	7
+8	8	數字8	Base	8
+9	9	數字9	Base	9
+10	10	行動加1	Action	1
