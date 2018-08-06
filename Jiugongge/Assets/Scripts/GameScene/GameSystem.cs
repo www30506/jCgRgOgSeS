@@ -3,29 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameSystem : MonoBehaviour {
+	[Header("Data")]
+	[SerializeField]private int[] completeTargets;
+	[SerializeField]private string[] initCardsID;
+	[Header("====")]
 	[SerializeField]private int maxCards = 9;
 	[SerializeField]private List<Card> cards;
 	private Queue<Card> cardsPool;
 	[SerializeField]private Transform cardListTransform;
 	[SerializeField]private Transform cardPoolTransform;
-
+	[SerializeField]private GameView gameView;
 	private enum SystemStatue{Idle, Working};
 	private SystemStatue systemStatue = SystemStatue.Idle;
+
 
 	void Start () {
 		LoadLevelData();
 		CreateCardPool();
 		CreateCards();
+		CreateCompleteTarget ();
+	}
 
-//		for (int i = 0; i < PD.DATA ["CardTable"].Count; i++) {
-//			print (PD.DATA ["CardTable"] [i.ToString ()] ["Type"]);
-//		}
+	private void CreateCompleteTarget(){
+		completeTargets = new int[3];
+		List<int> _range = new List<int> ();
+		for (int i = 1; i < 100; i++) {
+			_range.Add (i);
+		}
+
+		for (int i = 0; i < completeTargets.Length; i++) {
+
+			int _index = Random.Range (0, _range.Count);
+			completeTargets [i] = _range[_index];
+			_range.RemoveAt (_index);
+
+		}
+
+		gameView.InitCompleteTarget (completeTargets);
 	}
 
 	private void LoadLevelData(){
 	}
 
-	private void CreateCardPool(){
+	private void CreateCardPool(){;
 		cardsPool = new Queue<Card>();
 
 		for(int i=0; i< maxCards; i++){
@@ -65,7 +85,7 @@ public class GameSystem : MonoBehaviour {
 
 	private void CreateCards(){
 		for(int i=0; i< 9; i++){
-			CreateCard((i).ToString(), i);
+			CreateCard(initCardsID[i], i);
 		}
 	}
 
