@@ -137,7 +137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21f923d4b7ef5246b6a90b59293432c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_file: []
+  m_file:
+  - m_path: Data
+    m_name: CardTable
 --- !u!4 &364021724
 Transform:
   m_ObjectHideFlags: 0
