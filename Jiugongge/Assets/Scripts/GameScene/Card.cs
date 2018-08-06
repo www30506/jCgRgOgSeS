@@ -9,6 +9,8 @@ public class Card : MonoBehaviour {
 	[SerializeField]private int m_value;
 	[SerializeField]private string m_type;
 	[SerializeField]private string m_name;
+	[SerializeField]private TextMesh m_valueTextMesh;
+
 	private Transform thisTransform;
 
 	void Awake(){
@@ -22,18 +24,6 @@ public class Card : MonoBehaviour {
 	void Update () {
 		
 	}
-		
-	public void Init(string p_cardID,int p_positionIndex){
-		positionIndex = p_positionIndex;
-		cardID = p_cardID;
-		m_value = int.Parse(PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString());
-		m_type = PD.DATA ["CardTable"] [p_cardID] ["Type"].ToString();
-		m_name = PD.DATA ["CardTable"] [p_cardID] ["Name"].ToString();
-		m_SpriteRenderer.sprite = Resources.Load<Sprite> ("Textures/Cards/" + p_cardID);
-		print("Textures/Cards/" + p_cardID);
-		this.gameObject.name = p_cardID;
-		SetPosition(p_positionIndex);
-	}
 
 	public void OnMouseUp(){
 		print("【卡片放開】 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
@@ -41,6 +31,48 @@ public class Card : MonoBehaviour {
 
 	public void OnMouseDown(){
 		print("【卡片按下】 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
+	}
+
+	public void Init(string p_cardID,int p_positionIndex){
+		positionIndex = p_positionIndex;
+		cardID = p_cardID;
+		m_value = int.Parse(PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString());
+		m_type = PD.DATA ["CardTable"] [p_cardID] ["Type"].ToString();
+		m_name = PD.DATA ["CardTable"] [p_cardID] ["Name"].ToString();
+
+		//改變圖片現在沒用到
+		//ChangeSprite(p_cardID);
+		SetValue();
+		SetPosition(p_positionIndex);
+		this.gameObject.name = p_cardID;
+	}
+
+	private void ChangeSprite(string p_cardID){
+		m_SpriteRenderer.sprite = Resources.Load<Sprite> ("Textures/Cards/" + p_cardID);
+	}
+
+	private void SetValue(){
+		switch (m_type) {
+		case "Base":
+			m_valueTextMesh.color = Color.black;
+			break;
+		case "Action":
+			m_valueTextMesh.color = Color.green;
+			break;
+		case "Null":
+			m_valueTextMesh.color = Color.black;
+			break;
+		case "Player":
+			m_valueTextMesh.color = Color.red;
+			break;
+		}
+
+		if (m_value == 0) {
+			m_valueTextMesh.text = "";
+		}
+		else {
+			m_valueTextMesh.text = m_value.ToString ();
+		}
 	}
 
 	private void SetPosition(int p_cardIndex){
