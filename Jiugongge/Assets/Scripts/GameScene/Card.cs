@@ -12,6 +12,8 @@ public class Card : MonoBehaviour {
 	[SerializeField]private TextMesh m_valueTextMesh;
 
 	private Transform thisTransform;
+	public delegate void TouchCardHandler(int p_touchCardPositionIndex);
+	private event TouchCardHandler TouchCardEvent;
 
 	void Awake(){
 		thisTransform = this.transform;
@@ -26,14 +28,16 @@ public class Card : MonoBehaviour {
 	}
 
 	public void OnMouseUp(){
-		print("【卡片放開】 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
+		print("【點擊卡片】名稱 ： " + m_name +"  , cardID : " + cardID + "  , PositionIndex : " + positionIndex);
+		TouchCardEvent.Invoke (positionIndex);
 	}
+
 
 	public void OnMouseDown(){
-		print("【卡片按下】 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
+		//print("【卡片按下】 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
 	}
 
-	public void Init(string p_cardID,int p_positionIndex){
+	public void Init(string p_cardID,int p_positionIndex, TouchCardHandler p_onTouchCardEvent){
 		positionIndex = p_positionIndex;
 		cardID = p_cardID;
 		m_value = int.Parse(PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString());
@@ -44,7 +48,10 @@ public class Card : MonoBehaviour {
 		//ChangeSprite(p_cardID);
 		SetValue();
 		SetPosition(p_positionIndex);
-		this.gameObject.name = p_cardID;
+		#if UNITY_EDITOR
+		this.gameObject.name = m_name;
+		#endif
+		TouchCardEvent += p_onTouchCardEvent;
 	}
 
 	private void ChangeSprite(string p_cardID){
@@ -112,6 +119,14 @@ public class Card : MonoBehaviour {
 
 	public int GetPositionIndex(){
 		return positionIndex;
+	}
+
+	public string GetCardType(){
+		return m_type;
+	}
+
+	public string GetCardName(){
+		return m_name;
 	}
 
 	public void SetPositionIndex(int p_positionIndex){

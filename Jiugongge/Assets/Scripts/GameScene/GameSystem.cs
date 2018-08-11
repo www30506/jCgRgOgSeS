@@ -1,20 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameSystem : MonoBehaviour {
+	private enum OperationType{Addition, Subtraction, Multiplication, Division};
+	private enum SystemStatue{Idle, Working};
+
 	[Header("Data")]
 	[SerializeField]private int[] completeTargets;
+	[SerializeField]private OperationType operationState= OperationType.Addition;
 	[SerializeField]private string[] initCardsID;
 	[Header("====")]
+
 	[SerializeField]private int maxCards = 9;
 	[SerializeField]private List<Card> cards;
 	private Queue<Card> cardsPool;
 	[SerializeField]private Transform cardListTransform;
 	[SerializeField]private Transform cardPoolTransform;
 	[SerializeField]private GameView gameView;
-	private enum SystemStatue{Idle, Working};
 	private SystemStatue systemStatue = SystemStatue.Idle;
+	[SerializeField]private Card playerCard;
 
 
 	void Start () {
@@ -33,7 +39,7 @@ public class GameSystem : MonoBehaviour {
 
 		for (int i = 0; i < completeTargets.Length; i++) {
 
-			int _index = Random.Range (0, _range.Count);
+			int _index = UnityEngine.Random.Range (0, _range.Count);
 			completeTargets [i] = _range[_index];
 			_range.RemoveAt (_index);
 
@@ -57,11 +63,12 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	private void DestoryCard(int p_positionIndex){
-		for(int i=0; i< maxCards; i++){
+		for(int i=0; i< cards.Count; i++){
 			if(cards[i].GetPositionIndex() == p_positionIndex){
 				cards[i].DestoryEff();
 				cardsPool.Enqueue(cards[i]);
 				cards[i].transform.SetParent(cardPoolTransform, false);
+				cards.RemoveAt (i);
 			}
 		}
 	}
@@ -78,9 +85,14 @@ public class GameSystem : MonoBehaviour {
 
 	private void CreateCard(string p_CardID, int p_positionIndex){
 		Card _card = cardsPool.Dequeue();
-		_card.Init(p_CardID, p_positionIndex);
+		cards.Add (_card);
+		_card.Init(p_CardID, p_positionIndex, OnTouchCardEvent);
 		_card.CreateEff();
 		_card.transform.SetParent(cardListTransform, false);
+
+		if (_card.GetCardType() == "Player") {
+			playerCard = _card;
+		}
 	}
 
 	private void CreateCards(){
@@ -95,5 +107,36 @@ public class GameSystem : MonoBehaviour {
 
 	public void BackToMenu(){
 		Game.LoadScene ("MenuScene");
+	}
+
+	private void OnTouchCardEvent(int p_touchCardPositionIndex){
+		systemStatue = SystemStatue.Working;
+
+		if (IsNearby (playerCard.GetPositionIndex (), p_touchCardPositionIndex)) {
+//			playerCard.
+		}
+		systemStatue = SystemStatue.Idle;
+	}
+
+	private bool IsNearby(int p_playerPositionIndex, int p_touchCardPositionIndex){
+		bool _isNearby = false;
+
+		if (p_touchCardPositionIndex == p_playerPositionIndex - 1 || //左邊
+			p_touchCardPositionIndex == p_playerPositionIndex + 1 || //右邊
+			p_touchCardPositionIndex == p_playerPositionIndex - 3 || //上面
+			p_touchCardPositionIndex == p_playerPositionIndex + 3 //下面
+		) {
+			_isNearby = true;
+		}
+
+		return _isNearby;
+	}
+
+	IEnumerator IE_MoveCard(){
+		yield return null;
+	}
+
+	public void OnChangeOperation(string p_Operation){
+		operationState = (OperationType)Enum.Parse (typeof(OperationType), p_Operation);
 	}
 }
