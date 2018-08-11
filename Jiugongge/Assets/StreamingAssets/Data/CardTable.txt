@@ -13,4 +13,4 @@ key	ID	Name	Type	Value
 9	9	數字9	Base	9
 10	10	行動加1	Action	1
 11	11	初始牌	Null	0
-12	12	玩家	Player	1
+12	12	玩家	Player	0

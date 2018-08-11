@@ -67,7 +67,7 @@ public class Card : MonoBehaviour {
 			break;
 		}
 
-		if (m_value == 0) {
+		if (m_type == "Null") {
 			m_valueTextMesh.text = "";
 		}
 		else {
