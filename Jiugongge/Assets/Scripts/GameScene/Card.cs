@@ -40,7 +40,6 @@ public class Card : MonoBehaviour {
 	}
 
 	public void Init(string p_cardID,int p_positionIndex, TouchCardHandler p_onTouchCardEvent){
-//		positionIndex = p_positionIndex;
 		cardID = p_cardID;
 		m_value = int.Parse(PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString());
 		m_type = PD.DATA ["CardTable"] [p_cardID] ["Type"].ToString();
@@ -85,11 +84,47 @@ public class Card : MonoBehaviour {
 		}
 	}
 
-	public void SetPosition(int p_cardIndex){
-		positionIndex = p_cardIndex;
+	public void SetPosition(int p_positionIndex){
+		positionIndex = p_positionIndex;
 
 		Vector3 _newPosition = Vector3.zero;
-		switch(p_cardIndex){
+		switch(p_positionIndex){
+		case 0:
+			_newPosition = new Vector3(-2,2,0);
+			break;
+		case 1:
+			_newPosition = new Vector3(0,2,0);
+			break;
+		case 2:
+			_newPosition = new Vector3(2,2,0);
+			break;
+		case 3:
+			_newPosition = new Vector3(-2,0,0);
+			break;
+		case 4:
+			_newPosition = new Vector3(0,0,0);
+			break;
+		case 5:
+			_newPosition = new Vector3(2,0,0);
+			break;
+		case 6:
+			_newPosition = new Vector3(-2,-2,0);
+			break;
+		case 7:
+			_newPosition = new Vector3(0,-2,0);
+			break;
+		case 8:
+			_newPosition = new Vector3(2,-2,0);
+			break;
+		}
+		thisTransform.localPosition = _newPosition;
+	}
+
+	public IEnumerator IE_SetPosition(int p_positionIndex){
+		positionIndex = p_positionIndex;
+
+		Vector3 _newPosition = Vector3.zero;
+		switch(p_positionIndex){
 		case 0:
 			_newPosition = new Vector3(-2,2,0);
 			break;
@@ -119,6 +154,16 @@ public class Card : MonoBehaviour {
 			break;
 		}
 
+		Vector3 _prePosition = thisTransform.localPosition;
+		Vector3 _distance = _newPosition - _prePosition;
+		float _tempTime = 0;
+
+		while (_tempTime < 0.3f) {
+			thisTransform.localPosition = _prePosition + (_distance * _tempTime / 0.3f);
+			_tempTime += Time.deltaTime;
+			yield return null;
+		}
+
 		thisTransform.localPosition = _newPosition;
 	}
 
@@ -133,10 +178,6 @@ public class Card : MonoBehaviour {
 	public string GetCardName(){
 		return m_name;
 	}
-
-//	public void SetPositionIndex(int p_positionIndex){
-//		positionIndex = p_positionIndex;
-//	}
 
 	public IEnumerator Destory(){
 		print("【卡片消滅特效】 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
@@ -183,7 +224,6 @@ public class Card : MonoBehaviour {
 
 	public bool CanDivision(int p_value){
 		return true;
-
 //		bool _CanDivision = false;
 //		if (m_value % p_value == 0) {
 //			_CanDivision = true;

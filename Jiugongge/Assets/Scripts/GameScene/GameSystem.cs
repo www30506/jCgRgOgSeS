@@ -31,6 +31,7 @@ public class GameSystem : MonoBehaviour {
 	private int prePlayerPositionIndex;
 
 	void Start () {
+		PlayerPrefs.SetInt ("Action",100);
 		LoadLevelData();
 		CreateCardPool();
 		CreateCards();
@@ -151,13 +152,12 @@ public class GameSystem : MonoBehaviour {
 	IEnumerator IE_OnTouchCardEvent(int p_touchCardPositionIndex){
 		systemStatue = SystemStatue.Working;
 
-
 		if (IsNearby (playerCard.GetPositionIndex (), p_touchCardPositionIndex)) {
 			Card _card = GetCard (p_touchCardPositionIndex);
 
-			yield return StartCoroutine(IE_DestoryCard(p_touchCardPositionIndex));
-
 			DoCardAction (_card);
+
+			yield return StartCoroutine(IE_DestoryCard(p_touchCardPositionIndex));
 
 			yield return StartCoroutine (IE_MoveCard (p_touchCardPositionIndex));
 
@@ -227,7 +227,7 @@ public class GameSystem : MonoBehaviour {
 
 	IEnumerator IE_MoveCard(int p_touchCardPositionIndex){
 		prePlayerPositionIndex = playerCard.GetPositionIndex ();
-		playerCard.SetPosition (p_touchCardPositionIndex);
+		StartCoroutine (playerCard.IE_SetPosition (p_touchCardPositionIndex));
 
 		if (prePlayerPositionIndex - p_touchCardPositionIndex == 1) {
 			cardMoveState = CardMoveType.Left;
@@ -245,25 +245,25 @@ public class GameSystem : MonoBehaviour {
 		switch (cardMoveState) {
 		case CardMoveType.Down:
 			if(prePlayerPositionIndex - 3 >= 0)
-				GetCard (prePlayerPositionIndex - 3).SetPosition (prePlayerPositionIndex);
+				StartCoroutine(GetCard (prePlayerPositionIndex - 3).IE_SetPosition (prePlayerPositionIndex));
 			break;
 
 		case CardMoveType.Up:
 			if (prePlayerPositionIndex + 3 <= 8)
-				GetCard (prePlayerPositionIndex + 3).SetPosition (prePlayerPositionIndex);
+				StartCoroutine(GetCard (prePlayerPositionIndex + 3).IE_SetPosition (prePlayerPositionIndex));
 			break;
 
 		case CardMoveType.Left:
 			if (prePlayerPositionIndex % 3 != 2)
-				GetCard (prePlayerPositionIndex + 1).SetPosition (prePlayerPositionIndex);
+				StartCoroutine(GetCard (prePlayerPositionIndex + 1).IE_SetPosition (prePlayerPositionIndex));
 			break;
 
 		case CardMoveType.Right:
 			if (prePlayerPositionIndex % 3 != 0)
-				GetCard (prePlayerPositionIndex-1).SetPosition (prePlayerPositionIndex);
+				StartCoroutine(GetCard (prePlayerPositionIndex-1).IE_SetPosition (prePlayerPositionIndex));
 			break;
 		}
-		yield return null;
+		yield return new WaitForSeconds(0.5f);
 	}
 
 	IEnumerator IE_DestoryCard(int p_positionIndex){
