@@ -11,8 +11,8 @@ public class UTweenAlphaGroup : UTweener {
 	public float To;
 	protected translateDelegate[] translateType = new translateDelegate[3];
 	private float distanceVector, tempAlpha;
-	private CanvasRenderer crd;
-	private SpriteRenderer spriteRenderer;
+//	private CanvasRenderer crd;
+//	private SpriteRenderer spriteRenderer;
 	private CanvasGroup canvasGroup;
 
 	void Start(){
@@ -23,10 +23,10 @@ public class UTweenAlphaGroup : UTweener {
 		distanceVector = To - Form;
 
 		if(type == UseType.Sprite2D){
-			spriteRenderer = this.GetComponent<SpriteRenderer>();
+//			spriteRenderer = this.GetComponent<SpriteRenderer>();
 		}
 		else if (type == UseType.UGUI){
-			crd = this.GetComponent<CanvasRenderer> ();
+//			crd = this.GetComponent<CanvasRenderer> ();
 		}
 	}
 

@@ -7,7 +7,7 @@ public class UTweenSize : UTweener {
 	public Vector2 To;
 	protected translateDelegate[] translateType = new translateDelegate[3];
 	private Vector2 distanceSize, tempSize;
-	private RectTransform rectTransform;
+	private RectTransform rectTransform = null;
 	private SpriteRenderer spriteRenderer;
 
 	void Start(){
