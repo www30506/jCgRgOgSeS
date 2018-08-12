@@ -211,7 +211,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  Duration: 0.5
+  Duration: 0.3
   ignoreTimeScale: 0
   OnFinishedEvent:
     m_PersistentCalls:
