@@ -40,7 +40,7 @@ public class Card : MonoBehaviour {
 	}
 
 	public void Init(string p_cardID,int p_positionIndex, TouchCardHandler p_onTouchCardEvent){
-		positionIndex = p_positionIndex;
+//		positionIndex = p_positionIndex;
 		cardID = p_cardID;
 		m_value = int.Parse(PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString());
 		m_type = PD.DATA ["CardTable"] [p_cardID] ["Type"].ToString();
@@ -85,7 +85,9 @@ public class Card : MonoBehaviour {
 		}
 	}
 
-	private void SetPosition(int p_cardIndex){
+	public void SetPosition(int p_cardIndex){
+		positionIndex = p_cardIndex;
+
 		Vector3 _newPosition = Vector3.zero;
 		switch(p_cardIndex){
 		case 0:
@@ -132,9 +134,9 @@ public class Card : MonoBehaviour {
 		return m_name;
 	}
 
-	public void SetPositionIndex(int p_positionIndex){
-		positionIndex = p_positionIndex;
-	}
+//	public void SetPositionIndex(int p_positionIndex){
+//		positionIndex = p_positionIndex;
+//	}
 
 	public IEnumerator Destory(){
 		print("【卡片消滅特效】 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
@@ -182,11 +184,11 @@ public class Card : MonoBehaviour {
 	public bool CanDivision(int p_value){
 		return true;
 
-		bool _CanDivision = false;
-		if (m_value % p_value == 0) {
-			_CanDivision = true;
-		}
-
-		return _CanDivision;
+//		bool _CanDivision = false;
+//		if (m_value % p_value == 0) {
+//			_CanDivision = true;
+//		}
+//
+//		return _CanDivision;
 	}
 }

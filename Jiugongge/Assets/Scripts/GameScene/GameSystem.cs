@@ -6,6 +6,8 @@ using System;
 public class GameSystem : MonoBehaviour {
 	private enum OperationType{Addition, Subtraction, Multiplication, Division};
 	private enum SystemStatue{Idle, Working};
+	private enum CardMoveType{Left, Right, Up, Down};
+	[SerializeField]private CardMoveType cardMoveState = CardMoveType.Left;
 
 	[Header("Data")]
 	[SerializeField]private int[] completeTargets;
@@ -26,6 +28,7 @@ public class GameSystem : MonoBehaviour {
 	[SerializeField]private GameView gameView;
 	private SystemStatue systemStatue = SystemStatue.Idle;
 	[SerializeField]private Card playerCard;
+	private int prePlayerPositionIndex;
 
 	void Start () {
 		LoadLevelData();
@@ -156,9 +159,9 @@ public class GameSystem : MonoBehaviour {
 
 			DoCardAction (_card);
 
-			yield return StartCoroutine (IE_MoveCard ());
+			yield return StartCoroutine (IE_MoveCard (p_touchCardPositionIndex));
 
-			yield return StartCoroutine(CreateCard (drawCardsList [drawCardIndex], p_touchCardPositionIndex));
+			yield return StartCoroutine(CreateCard (drawCardsList [drawCardIndex], GetCreateCardPositionIndex()));
 
 			drawCardIndex++;
 
@@ -178,7 +181,88 @@ public class GameSystem : MonoBehaviour {
 		yield return null;
 	}
 		
-	IEnumerator IE_MoveCard(){
+	private int GetCreateCardPositionIndex(){
+		int _CreateCardPositionIndex = 0;
+
+		switch (cardMoveState) {
+		case CardMoveType.Down:
+			if (prePlayerPositionIndex - 3 >= 0) {
+				_CreateCardPositionIndex = prePlayerPositionIndex -3;
+			} 
+			else {
+				_CreateCardPositionIndex = prePlayerPositionIndex;
+			}
+			break;
+
+		case CardMoveType.Up:
+			if (prePlayerPositionIndex + 3 > 8) {
+				_CreateCardPositionIndex = prePlayerPositionIndex;
+			} 
+			else {
+				_CreateCardPositionIndex = prePlayerPositionIndex + 3;
+			}
+			break;
+
+		case CardMoveType.Left:
+			if (prePlayerPositionIndex % 3 == 2) {
+				_CreateCardPositionIndex = prePlayerPositionIndex;
+			} 
+			else {
+				_CreateCardPositionIndex = prePlayerPositionIndex + 1;
+			}
+			break;
+
+		case CardMoveType.Right:
+			if (prePlayerPositionIndex % 3 == 0) {
+				_CreateCardPositionIndex = prePlayerPositionIndex;
+			} 
+			else {
+				_CreateCardPositionIndex = prePlayerPositionIndex - 1;
+			}
+			break;
+		}
+
+		return _CreateCardPositionIndex;
+	}
+
+	IEnumerator IE_MoveCard(int p_touchCardPositionIndex){
+		prePlayerPositionIndex = playerCard.GetPositionIndex ();
+		playerCard.SetPosition (p_touchCardPositionIndex);
+
+		if (prePlayerPositionIndex - p_touchCardPositionIndex == 1) {
+			cardMoveState = CardMoveType.Left;
+		}
+		else if (prePlayerPositionIndex - p_touchCardPositionIndex == -1) {
+			cardMoveState = CardMoveType.Right;
+		}
+		else if (prePlayerPositionIndex - p_touchCardPositionIndex == 3) {
+			cardMoveState = CardMoveType.Up;
+		}
+		else if (prePlayerPositionIndex - p_touchCardPositionIndex == -3) {
+			cardMoveState = CardMoveType.Down;
+		}
+
+		switch (cardMoveState) {
+		case CardMoveType.Down:
+			if(prePlayerPositionIndex - 3 >= 0)
+				GetCard (prePlayerPositionIndex - 3).SetPosition (prePlayerPositionIndex);
+			break;
+
+		case CardMoveType.Up:
+			if (prePlayerPositionIndex + 3 <= 8)
+				GetCard (prePlayerPositionIndex + 3).SetPosition (prePlayerPositionIndex);
+			break;
+
+		case CardMoveType.Left:
+			if (prePlayerPositionIndex % 3 != 2)
+				GetCard (prePlayerPositionIndex + 1).SetPosition (prePlayerPositionIndex);
+			break;
+
+		case CardMoveType.Right:
+			if (prePlayerPositionIndex % 3 != 0)
+				GetCard (prePlayerPositionIndex-1).SetPosition (prePlayerPositionIndex);
+			break;
+		}
 		yield return null;
 	}
 
