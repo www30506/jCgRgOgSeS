@@ -14,9 +14,11 @@ public class Card : MonoBehaviour {
 	private Transform thisTransform;
 	public delegate void TouchCardHandler(int p_touchCardPositionIndex);
 	private event TouchCardHandler TouchCardEvent;
+	private UTweenScale destoryEff;
 
 	void Awake(){
 		thisTransform = this.transform;
+		destoryEff = this.GetComponent<UTweenScale> ();
 	}
 
 	void Start () {
@@ -51,6 +53,7 @@ public class Card : MonoBehaviour {
 		#if UNITY_EDITOR
 		this.gameObject.name = m_name;
 		#endif
+
 		TouchCardEvent += p_onTouchCardEvent;
 	}
 
@@ -133,11 +136,57 @@ public class Card : MonoBehaviour {
 		positionIndex = p_positionIndex;
 	}
 
-	public void DestoryEff(){
+	public IEnumerator Destory(){
 		print("【卡片消滅特效】 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
+		TouchCardEvent = null;
+		yield return StartCoroutine (IE_DestoryEff());
 	}
 
-	public void CreateEff(){
+	IEnumerator IE_DestoryEff(){
+		destoryEff.enabled = true;
+		destoryEff.ReSetToStart ();
+		yield return new WaitForSeconds (destoryEff.Duration);
+	}
+
+
+	public IEnumerator CreateEff(){
 		print("【卡片生成特效】 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
+		this.transform.localScale = Vector3.one;
+		yield return null;
+	}
+
+	public int GetCardValue(){
+		return m_value;
+	}
+
+	public void AdditionValue(int p_value){
+		m_value += p_value;
+		m_valueTextMesh.text = m_value.ToString ();
+	}
+
+	public void SubtractionValue(int p_value){
+		m_value -= p_value;
+		m_valueTextMesh.text = m_value.ToString ();
+	}
+
+	public void MultiplicationValue(int p_value){
+		m_value *= p_value;
+		m_valueTextMesh.text = m_value.ToString ();
+	}
+
+	public void DivisionValue(int p_value){
+		m_value /= p_value;
+		m_valueTextMesh.text = m_value.ToString ();
+	}
+
+	public bool CanDivision(int p_value){
+		return true;
+
+		bool _CanDivision = false;
+		if (m_value % p_value == 0) {
+			_CanDivision = true;
+		}
+
+		return _CanDivision;
 	}
 }

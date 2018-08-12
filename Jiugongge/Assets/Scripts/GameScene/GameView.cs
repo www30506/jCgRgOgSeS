@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class GameView : MonoBehaviour {
 	[SerializeField]private Text[] completeTargetText;
+	[SerializeField]private Text actionValueText;
+	[SerializeField]private GameObject winUI;
+	[SerializeField]private GameObject cardList;
 
 	void Start () {
 		
@@ -18,5 +21,18 @@ public class GameView : MonoBehaviour {
 		for (int i = 0; i < p_completeTarget.Length; i++) {
 			completeTargetText [i].text = p_completeTarget [i].ToString ();
 		}
+	}
+
+	public void CompleteTargetEff(int p_index){
+		completeTargetText [p_index].color = Color.green;
+	}
+
+	public void SetActionValue(int p_value){
+		actionValueText.text = p_value.ToString ();
+	}
+
+	public void ShowWinUI(){
+		winUI.SetActive (true);
+		cardList.SetActive (false);
 	}
 }
