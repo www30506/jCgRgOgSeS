@@ -140,6 +140,8 @@ MonoBehaviour:
   m_file:
   - m_path: Data
     m_name: CardTable
+  - m_path: Data
+    m_name: LevelTable
 --- !u!4 &364021724
 Transform:
   m_ObjectHideFlags: 0

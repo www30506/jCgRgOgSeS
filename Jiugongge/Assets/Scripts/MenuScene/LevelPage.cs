@@ -38,6 +38,7 @@ public class LevelPage : Page_Base {
 
 	public void ToGame(int p_level){
 		print ("進入遊戲 關卡：" + p_level);
+		Game.NOWLEVEL = p_level;
 		Game.LoadScene ("GameScene");
 	}
 }

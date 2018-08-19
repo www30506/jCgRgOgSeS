@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Text.RegularExpressions;
 
 public class GameSystem : MonoBehaviour {
 	private enum OperationType{Addition, Subtraction, Multiplication, Division};
@@ -11,7 +12,7 @@ public class GameSystem : MonoBehaviour {
 
 	[Header("Data")]
 	[SerializeField]private int[] completeTargets;
-	[SerializeField]private bool[] IscompleteTargets = new bool[3];
+	[SerializeField]private bool[] IscompleteTargets;
 	[SerializeField]private OperationType operationState= OperationType.Addition;
 	[SerializeField]private string[] initCardsID;
 	[SerializeField]private string[] drawCardsList;
@@ -39,7 +40,8 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	private void InitActionValue(){
-		actionValue = 10;
+		int _tagetCount = int.Parse(PD.DATA ["LevelTable"] [Game.NOWLEVEL.ToString()]["TargetCount"].ToString());
+		actionValue = _tagetCount * GlobalData.TARGET_TIME;
 		gameView.SetActionValue (actionValue);
 	}
 
@@ -49,18 +51,37 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	private void CreateCompleteTarget(){
-		completeTargets = new int[3];
+		int _tagetCount = int.Parse(PD.DATA ["LevelTable"] [Game.NOWLEVEL.ToString()]["TargetCount"].ToString());
+		string _targetGrupStr = PD.DATA ["LevelTable"] [Game.NOWLEVEL.ToString()]["TagetGroup"].ToString();
+		List<int> _rangeGroup = new List<int> ();
 
-		List<int> _range = new List<int> ();
-		for (int i = 1; i < 4; i++) {
-			_range.Add (i);
+		if (_targetGrupStr.Contains ("~")) {
+			string[] _aaa = Regex.Split (_targetGrupStr, "~");
+			int _startNumber = int.Parse(_aaa[0]);
+			int _endNumber = int.Parse (_aaa [1]);
+
+			int _tempNumber = _startNumber;
+			while(_tempNumber <= _endNumber){
+				_rangeGroup.Add (_tempNumber++);
+			}
+		}
+		else{
+			string[] _targetGroup;
+			_targetGroup = Regex.Split (_targetGrupStr, ",");
+
+			for (int i = 0; i < _targetGroup.Length; i++) {
+				_rangeGroup.Add (int.Parse(_targetGroup[i]));
+			}
 		}
 
+
+		completeTargets = new int[_tagetCount];
+		IscompleteTargets = new bool[_tagetCount];
 		for (int i = 0; i < completeTargets.Length; i++) {
 
-			int _index = UnityEngine.Random.Range (0, _range.Count);
-			completeTargets [i] = _range[_index];
-			_range.RemoveAt (_index);
+			int _index = UnityEngine.Random.Range (0, _rangeGroup.Count);
+			completeTargets [i] = _rangeGroup[_index];
+			_rangeGroup.RemoveAt (_index);
 
 		}
 
@@ -68,6 +89,7 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	private void LoadLevelData(){
+		
 	}
 
 	private void CreateCardPool(){;
@@ -87,7 +109,7 @@ public class GameSystem : MonoBehaviour {
 				return cards[i];
 			}
 		}
-		Debug.LogError("錯誤 沒有取得卡片 位置編號 : " + p_positionIndex);
+
 		return null;
 	}
 

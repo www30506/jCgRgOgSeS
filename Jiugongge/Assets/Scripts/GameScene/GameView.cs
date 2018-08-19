@@ -22,6 +22,10 @@ public class GameView : MonoBehaviour {
 		for (int i = 0; i < p_completeTarget.Length; i++) {
 			completeTargetText [i].text = p_completeTarget [i].ToString ();
 		}
+
+		for (int i = p_completeTarget.Length; i < 5; i++) {
+			completeTargetText [i].transform.parent.gameObject.SetActive (false);
+		}
 	}
 
 	public void CompleteTargetEff(int p_index){
