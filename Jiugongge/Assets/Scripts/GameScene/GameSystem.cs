@@ -85,6 +85,17 @@ public class GameSystem : MonoBehaviour {
 
 		}
 
+		//重小排到大
+		for (int i = 0; i < completeTargets.Length-1; i++) {
+			for (int j = i + 1; j < completeTargets.Length; j++) {
+				if (completeTargets [i] > completeTargets [j]) {
+					int _temp = completeTargets [i];
+					completeTargets [i] = completeTargets [j];
+					completeTargets [j] = _temp;
+				}
+			}
+		}
+
 		gameView.InitCompleteTarget (completeTargets);
 	}
 
