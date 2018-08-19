@@ -5,7 +5,7 @@ using System;
 
 public class GameSystem : MonoBehaviour {
 	private enum OperationType{Addition, Subtraction, Multiplication, Division};
-	private enum SystemStatue{Idle, Working};
+	private enum SystemStatue{Idle, Working, Win , Loss};
 	private enum CardMoveType{Left, Right, Up, Down};
 	[SerializeField]private CardMoveType cardMoveState = CardMoveType.Left;
 
@@ -15,7 +15,7 @@ public class GameSystem : MonoBehaviour {
 	[SerializeField]private OperationType operationState= OperationType.Addition;
 	[SerializeField]private string[] initCardsID;
 	[SerializeField]private string[] drawCardsList;
-	[SerializeField]private int actionValue;
+	[SerializeField]private float actionValue;
 	[Header("====")]
 
 	[SerializeField]private int drawCardIndex;
@@ -31,7 +31,7 @@ public class GameSystem : MonoBehaviour {
 	private int prePlayerPositionIndex;
 
 	void Start () {
-		PlayerPrefs.SetInt ("Action",100);
+//		PlayerPrefs.SetInt ("Action",100);
 		LoadLevelData();
 		CreateCardPool();
 		CreateCards();
@@ -40,27 +40,27 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	private void InitActionValue(){
-		int _isFirstGame = PlayerPrefs.GetInt ("FirstGame");
+//		int _isFirstGame = PlayerPrefs.GetInt ("FirstGame");
 
-		if (_isFirstGame == 0) {
-			PlayerPrefs.SetInt ("FirstGame", 1);
-			PlayerPrefs.SetInt ("Action",100);
-		}
+//		if (_isFirstGame == 0) {
+//			PlayerPrefs.SetInt ("FirstGame", 1);
+//			PlayerPrefs.SetInt ("Action",100);
+//		}
 
-		actionValue = PlayerPrefs.GetInt ("Action");
-
+//		actionValue = PlayerPrefs.GetInt ("Action");
+		actionValue = 10;
 		gameView.SetActionValue (actionValue);
 	}
 
-	private bool IsActionValueEnough(){
-		if (actionValue > 0)
-			return true;
-		return false;
-	}
+//	private bool IsActionValueEnough(){
+//		if (actionValue > 0)
+//			return true;
+//		return false;
+//	}
 
 	private void SetActionValue(int p_value){
 		actionValue += p_value;
-		PlayerPrefs.SetInt ("Action", actionValue);
+//		PlayerPrefs.SetInt ("Action", actionValue);
 		gameView.SetActionValue (actionValue);
 	}
 
@@ -126,7 +126,14 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	void Update () {
-		
+		actionValue -= Time.deltaTime;
+		gameView.SetActionValue (actionValue);
+		if (actionValue < 0 && systemStatue != SystemStatue.Loss) {
+			print ("【遊戲結束】 時間結束");
+			systemStatue = SystemStatue.Loss;
+			gameView.ShowLossUI ();
+
+		}
 	}
 
 	public void BackToMenu(){
@@ -134,18 +141,18 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	private void OnTouchCardEvent(int p_touchCardPositionIndex){
-		if (systemStatue == SystemStatue.Working){
+		if (systemStatue != SystemStatue.Idle){
 			print ("工作中");
 			return;
 		}
 
-		if (IsActionValueEnough ()) {
-			SetActionValue (-1);
+//		if (IsActionValueEnough ()) {
+//			SetActionValue (-1);
 			StartCoroutine (IE_OnTouchCardEvent (p_touchCardPositionIndex));
-		}
-		else {
-			print ("行動不足");
-		}
+//		}
+//		else {
+//			print ("行動不足");
+//		}
 
 	}
 
@@ -171,8 +178,9 @@ public class GameSystem : MonoBehaviour {
 
 			CheckCompleteTarget ();
 
-			if (IsWinTheGame ()) {
+			if (IsWinTheGame () && systemStatue != SystemStatue.Win) {
 				print ("勝利");
+				systemStatue = SystemStatue.Win;
 				gameView.ShowWinUI ();
 			}
 		}
@@ -344,8 +352,8 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	public void WinTheGame(){
-		int _actionValue = PlayerPrefs.GetInt ("Action");
-		PlayerPrefs.SetInt ("Action", _actionValue+10);
+//		int _actionValue = PlayerPrefs.GetInt ("Action");
+//		PlayerPrefs.SetInt ("Action", _actionValue+10);
 		BackToMenu ();
 	}
 }

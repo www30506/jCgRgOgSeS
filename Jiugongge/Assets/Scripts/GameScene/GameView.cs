@@ -7,6 +7,7 @@ public class GameView : MonoBehaviour {
 	[SerializeField]private Text[] completeTargetText;
 	[SerializeField]private Text actionValueText;
 	[SerializeField]private GameObject winUI;
+	[SerializeField]private GameObject lossUI;
 	[SerializeField]private GameObject cardList;
 
 	void Start () {
@@ -27,12 +28,17 @@ public class GameView : MonoBehaviour {
 		completeTargetText [p_index].color = Color.green;
 	}
 
-	public void SetActionValue(int p_value){
+	public void SetActionValue(float p_value){
 		actionValueText.text = p_value.ToString ();
 	}
 
 	public void ShowWinUI(){
 		winUI.SetActive (true);
+		cardList.SetActive (false);
+	}
+
+	public void ShowLossUI(){
+		lossUI.SetActive (true);
 		cardList.SetActive (false);
 	}
 }

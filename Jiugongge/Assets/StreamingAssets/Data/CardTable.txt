@@ -11,6 +11,6 @@ key	ID	Name	Type	Value
 7	7	數字7	Base	7
 8	8	數字8	Base	8
 9	9	數字9	Base	9
-10	10	行動加2	Action	2
+10	10	行動加2	Action	10
 11	11	初始牌	Null	0
 12	12	玩家	Player	0
