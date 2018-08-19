@@ -31,7 +31,6 @@ public class GameSystem : MonoBehaviour {
 	private int prePlayerPositionIndex;
 
 	void Start () {
-//		PlayerPrefs.SetInt ("Action",100);
 		LoadLevelData();
 		CreateCardPool();
 		CreateCards();
@@ -40,27 +39,12 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	private void InitActionValue(){
-//		int _isFirstGame = PlayerPrefs.GetInt ("FirstGame");
-
-//		if (_isFirstGame == 0) {
-//			PlayerPrefs.SetInt ("FirstGame", 1);
-//			PlayerPrefs.SetInt ("Action",100);
-//		}
-
-//		actionValue = PlayerPrefs.GetInt ("Action");
 		actionValue = 10;
 		gameView.SetActionValue (actionValue);
 	}
 
-//	private bool IsActionValueEnough(){
-//		if (actionValue > 0)
-//			return true;
-//		return false;
-//	}
-
 	private void SetActionValue(int p_value){
 		actionValue += p_value;
-//		PlayerPrefs.SetInt ("Action", actionValue);
 		gameView.SetActionValue (actionValue);
 	}
 
@@ -146,14 +130,7 @@ public class GameSystem : MonoBehaviour {
 			return;
 		}
 
-//		if (IsActionValueEnough ()) {
-//			SetActionValue (-1);
-			StartCoroutine (IE_OnTouchCardEvent (p_touchCardPositionIndex));
-//		}
-//		else {
-//			print ("行動不足");
-//		}
-
+		StartCoroutine (IE_OnTouchCardEvent (p_touchCardPositionIndex));
 	}
 
 	IEnumerator IE_OnTouchCardEvent(int p_touchCardPositionIndex){
@@ -352,8 +329,6 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	public void WinTheGame(){
-//		int _actionValue = PlayerPrefs.GetInt ("Action");
-//		PlayerPrefs.SetInt ("Action", _actionValue+10);
 		BackToMenu ();
 	}
 }
