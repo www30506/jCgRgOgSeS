@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UTweener : MonoBehaviour {
-	protected enum UseType{Sprite2D, UGUI, Object_3D};
+	protected enum UseType{Sprite2D, UGUI, Object_3D, UGUI_Text};
 	protected UseType type;
 	public enum LoopType {Once,Loop,PingPong};
 	public LoopType loopType = LoopType.Once;
@@ -21,9 +22,12 @@ public class UTweener : MonoBehaviour {
 
 	void Awake(){
 		myRectTransfrom = this.GetComponent<RectTransform> ();
-		if(myRectTransfrom ==null){
+		if (this.GetComponent<Text> () != null) {
+			type = UseType.UGUI_Text;
+		}
+		else if (myRectTransfrom == null) {
 			type = UseType.Sprite2D;
-			myTransform = this.GetComponent<Transform>();
+			myTransform = this.GetComponent<Transform> ();
 		}
 		else{
 			type = UseType.UGUI;

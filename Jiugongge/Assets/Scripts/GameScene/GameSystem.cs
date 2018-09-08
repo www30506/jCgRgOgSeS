@@ -17,6 +17,7 @@ public class GameSystem : MonoBehaviour {
 	[SerializeField]private string[] initCardsID;
 	[SerializeField]private string[] drawCardsList;
 	[SerializeField]private float actionValue;
+	[SerializeField]private float useTime;
 	[Header("====")]
 
 	[SerializeField]private int drawCardIndex;
@@ -144,7 +145,16 @@ public class GameSystem : MonoBehaviour {
 
 	void Update () {
 		actionValue -= Time.deltaTime;
+		useTime += Time.deltaTime;
+
 		gameView.SetActionValue (actionValue);
+		if (actionValue < 10) {
+			gameView.ActionValueFlash (true);
+		} 
+		else {
+			gameView.ActionValueFlash (false);
+		}
+
 		if (actionValue < 0 && systemStatue != SystemStatue.Loss) {
 			print ("【遊戲結束】 時間結束");
 			systemStatue = SystemStatue.Loss;
@@ -191,7 +201,7 @@ public class GameSystem : MonoBehaviour {
 			if (IsWinTheGame () && systemStatue != SystemStatue.Win) {
 				print ("勝利");
 				systemStatue = SystemStatue.Win;
-				gameView.ShowWinUI ();
+				gameView.ShowWinUI (useTime);
 			}
 		}
 

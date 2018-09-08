@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 [AddComponentMenu("UI/Tween/TweenColor")]
 public class UTweenColor : UTweener {
@@ -8,6 +9,7 @@ public class UTweenColor : UTweener {
 	protected translateDelegate[] translateType = new translateDelegate[3];
 	private Color distanceVector, tempColor;
 	private CanvasRenderer crd;
+	private Text m_text;
 	private SpriteRenderer spriteRenderer;
 
 	void Start(){
@@ -16,11 +18,15 @@ public class UTweenColor : UTweener {
 		translateType [2] = new translateDelegate(PingPong);
 		distanceVector = To - Form;
 
-		if(type == UseType.Sprite2D){
-			spriteRenderer = this.GetComponent<SpriteRenderer>();
+		if (type == UseType.Sprite2D) {
+			spriteRenderer = this.GetComponent<SpriteRenderer> ();
 		}
-		else if (type == UseType.UGUI){
+		else if (type == UseType.UGUI) {
 			crd = this.GetComponent<CanvasRenderer> ();
+
+		}
+		else if (type == UseType.UGUI_Text) {
+			m_text = this.GetComponent<Text> ();
 		}
 	}
 
@@ -91,6 +97,9 @@ public class UTweenColor : UTweener {
 		case UseType.Sprite2D:
 			spriteRenderer.color = p_color;
 			break;
+		case UseType.UGUI_Text:
+			m_text.color = p_color;
+		break;
 		}
 	}
 }

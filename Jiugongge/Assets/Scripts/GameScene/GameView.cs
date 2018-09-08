@@ -9,6 +9,8 @@ public class GameView : MonoBehaviour {
 	[SerializeField]private GameObject winUI;
 	[SerializeField]private GameObject lossUI;
 	[SerializeField]private GameObject cardList;
+	[SerializeField]private Text useTimeText;
+	[SerializeField]private UTweenColor actionValueEffect;
 
 	void Start () {
 		
@@ -33,11 +35,25 @@ public class GameView : MonoBehaviour {
 	}
 
 	public void SetActionValue(float p_value){
-		actionValueText.text = p_value.ToString ();
+		actionValueText.text = string.Format("{0:F2}", p_value);
 	}
 
-	public void ShowWinUI(){
+	public void ActionValueFlash(bool p_active){
+		if (p_active) {
+			if (actionValueEffect.enabled == false)
+				actionValueEffect.enabled = true;
+		} 
+		else {
+			if (actionValueEffect.enabled == true) {
+				actionValueEffect.enabled = false;
+				actionValueText.color = Color.black;
+			}
+		}
+	}
+
+	public void ShowWinUI(float p_useTime){
 		winUI.SetActive (true);
+		useTimeText.text = "使用時間：" + p_useTime.ToString("#.##");
 		cardList.SetActive (false);
 	}
 
