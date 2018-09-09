@@ -1,4 +1,4 @@
-[define]name	編號	名稱	類型	數值
+﻿[define]name	編號	名稱	類型	數值
 [define]type	string	string	string	string
 key	ID	Name	Type	Value
 0	0	數字0	Base	0
@@ -14,3 +14,5 @@ key	ID	Name	Type	Value
 10	10	行動加2	Action	10
 11	11	初始牌	Null	0
 12	12	玩家	Player	0
+13	13	驚嘆號	Marvel	0
+14	14	問號	Question	0

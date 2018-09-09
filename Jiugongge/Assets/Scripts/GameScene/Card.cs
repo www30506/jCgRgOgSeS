@@ -74,10 +74,22 @@ public class Card : MonoBehaviour {
 		case "Player":
 			m_valueTextMesh.color = Color.red;
 			break;
+		case "Question":
+			m_valueTextMesh.color = Color.red;
+			break;
+		case "Marvel":
+			m_valueTextMesh.color = Color.blue;
+			break;
 		}
 
 		if (m_type == "Null") {
 			m_valueTextMesh.text = "";
+		}
+		else if(m_type == "Question"){
+			m_valueTextMesh.text = "?";
+		}
+		else if(m_type == "Marvel"){
+			m_valueTextMesh.text = "!";
 		}
 		else {
 			m_valueTextMesh.text = m_value.ToString ();
