@@ -33,15 +33,99 @@ public class GameSystem : MonoBehaviour {
 	private int prePlayerPositionIndex;
 
 	void Start () {
+		InitDrawCardList ();
 		LoadLevelData();
 		CreateCardPool();
 		CreateCards();
 		CreateCompleteTarget ();
 		InitActionValue ();
 	}
+	//1>2>秒>3>4>!>5>6>秒>7>8>?>9>0>秒>LOOP
+	//第五關
+	//0~9+秒數卡 隨機
+	private void InitDrawCardList(){
+		if ((Game.NOWLEVEL + 1) % 5 == 0) {
+			drawCardsList = new string[11];
+			drawCardsList [0] = "1";
+			drawCardsList [1] = "2";
+			drawCardsList [2] = "3";
+			drawCardsList [3] = "4";
+			drawCardsList [4] = "5";
+			drawCardsList [5] = "6";
+			drawCardsList [6] = "7";
+			drawCardsList [7] = "8";
+			drawCardsList [8] = "9";
+			drawCardsList [9] = "10";
+			drawCardsList [10] = "0";
+		} else {
+			drawCardsList = new string[15];
+			drawCardsList [0] = "1";
+			drawCardsList [1] = "2";
+			drawCardsList [2] = "10";
+			drawCardsList [3] = "3";
+			drawCardsList [4] = "4";
+			drawCardsList [5] = "13";
+			drawCardsList [6] = "5";
+			drawCardsList [7] = "6";
+			drawCardsList [8] = "10";
+			drawCardsList [9] = "7";
+			drawCardsList [10] = "8";
+			drawCardsList [11] = "14";
+			drawCardsList [12] = "9";
+			drawCardsList [13] = "0";
+			drawCardsList [14] = "10";
+		}
+	}
+
+	private int GetTargetCount(int p_level){
+		int _targetCount = p_level % 5;
+		if (_targetCount == 0) {
+			_targetCount = 5;
+		}
+
+		return _targetCount;
+	}
+
+	private string GetTargetRange(int p_level){
+		int _targetCount = GetTargetCount(p_level);
+		int _startNumber = 0;
+		string _targetRange = "";
+
+		if (p_level % 5 == 0) {
+			_startNumber = 1 + (((p_level-1) / 5)*10);
+		}
+		else if (p_level % 5 == 1) {
+			_startNumber = 1 + ((p_level / 5)*10);
+		}
+		else if (p_level % 5 == 2) {
+			_startNumber = 2 + ((p_level / 5)*10);
+		}
+		else if (p_level % 5 == 3) {
+			_startNumber = 4 + ((p_level / 5)*10);
+		}
+		else if (p_level % 5 == 4) {
+			_startNumber = 7 + ((p_level / 5)*10);
+		}
+
+		if(p_level % 5 == 0){
+			_targetRange = "1~" + ((p_level / 5) * 10);
+		}
+		else{
+			for (int i = 0; i < _targetCount; i++) {
+				if (string.IsNullOrEmpty (_targetRange)) {
+					_targetRange += "" + (i + _startNumber);
+				} 
+				else {
+					_targetRange += "," + (i + _startNumber);
+				}
+			}
+		}
+
+		return _targetRange;
+	}
 
 	private void InitActionValue(){
-		int _tagetCount = int.Parse(PD.DATA ["LevelTable"] [Game.NOWLEVEL.ToString()]["TargetCount"].ToString());
+		int _tagetCount = GetTargetCount (Game.NOWLEVEL+1);
 		actionValue = _tagetCount * GlobalData.TARGET_TIME;
 		gameView.SetActionValue (actionValue);
 	}
@@ -52,12 +136,12 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	private void CreateCompleteTarget(){
-		int _tagetCount = int.Parse(PD.DATA ["LevelTable"] [Game.NOWLEVEL.ToString()]["TargetCount"].ToString());
-		string _targetGrupStr = PD.DATA ["LevelTable"] [Game.NOWLEVEL.ToString()]["TagetGroup"].ToString();
+		int _tagetCount = GetTargetCount (Game.NOWLEVEL +1);
+		string _targetRange = GetTargetRange(Game.NOWLEVEL+1);
 		List<int> _rangeGroup = new List<int> ();
-
-		if (_targetGrupStr.Contains ("~")) {
-			string[] _aaa = Regex.Split (_targetGrupStr, "~");
+		print ("_targetRange : " + _targetRange);
+		if (_targetRange.Contains ("~")) {
+			string[] _aaa = Regex.Split (_targetRange, "~");
 			int _startNumber = int.Parse(_aaa[0]);
 			int _endNumber = int.Parse (_aaa [1]);
 
@@ -68,7 +152,7 @@ public class GameSystem : MonoBehaviour {
 		}
 		else{
 			string[] _targetGroup;
-			_targetGroup = Regex.Split (_targetGrupStr, ",");
+			_targetGroup = Regex.Split (_targetRange, ",");
 
 			for (int i = 0; i < _targetGroup.Length; i++) {
 				_rangeGroup.Add (int.Parse(_targetGroup[i]));
@@ -375,3 +459,33 @@ public class GameSystem : MonoBehaviour {
 		BackToMenu ();
 	}
 }
+
+/*
+五大關	每關100小關
+1	>	1
+2	>	2,3
+3	>	4,5,6
+4	>	7,8,9,10
+5	>	隨機1~10  目標五個
+
+6	>	11
+7	>	12,13
+8	>	14,15,16
+9	>	17,18,19,20
+10	>	隨機11~20  目標五個
+
+
+
+%5 = 1	>	
+
+leve%5
+%10 = 2	>	
+
+
+出排順序
+第1~4關
+1>2>秒>3>4>!>5>6>秒>7>8>?>9>0>秒>LOOP
+
+第5關
+[隨機]:0~9+秒數卡
+*/

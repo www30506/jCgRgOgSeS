@@ -1,8 +1,0 @@
-[define]name	編號	名稱	目標	目標數
-[define]type	string	string	string	string
-key	ID	Name	TagetGroup	TargetCount
-0	0	關卡1	1	1
-1	1	關卡2	2,3	2
-2	2	關卡3	4~6	3
-3	3	關卡4	7~10	4
-4	4	關卡5	1~10	5
