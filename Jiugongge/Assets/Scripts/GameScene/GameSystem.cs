@@ -280,12 +280,18 @@ public class GameSystem : MonoBehaviour {
 
 			yield return StartCoroutine (IE_MoveCard (p_touchCardPositionIndex));
 
-			yield return StartCoroutine(CreateCard (drawCardsList [drawCardIndex], GetCreateCardPositionIndex()));
+			if (Game.NOWLEVEL % 5 == 4) {
+				drawCardIndex = UnityEngine.Random.Range (0, drawCardsList.Length);
+				yield return StartCoroutine (CreateCard (drawCardsList [drawCardIndex], GetCreateCardPositionIndex ()));
+			} 
+			else {
+				yield return StartCoroutine (CreateCard (drawCardsList [drawCardIndex], GetCreateCardPositionIndex ()));
 
-			drawCardIndex++;
+				drawCardIndex++;
 
-			if (drawCardIndex > drawCardsList.Length-1) {
-				drawCardIndex = 0;
+				if (drawCardIndex > drawCardsList.Length - 1) {
+					drawCardIndex = 0;
+				}
 			}
 
 			CheckCompleteTarget ();
