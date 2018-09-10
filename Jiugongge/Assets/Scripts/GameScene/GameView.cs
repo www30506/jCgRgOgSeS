@@ -53,7 +53,7 @@ public class GameView : MonoBehaviour {
 
 	public void ShowWinUI(float p_useTime){
 		winUI.SetActive (true);
-		useTimeText.text = "使用時間：" + p_useTime.ToString("#.##");
+		useTimeText.text = I2.Loc.ScriptLocalization.Get("Game_UseTime") + p_useTime.ToString("#.##");
 		cardList.SetActive (false);
 	}
 

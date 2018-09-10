@@ -300,6 +300,7 @@ public class GameSystem : MonoBehaviour {
 				print ("勝利");
 				systemStatue = SystemStatue.Win;
 				gameView.ShowWinUI (useTime);
+				SaveData ();
 			}
 		}
 
@@ -307,6 +308,10 @@ public class GameSystem : MonoBehaviour {
 		yield return null;
 	}
 		
+	private void SaveData(){
+		
+	}
+
 	private int GetCreateCardPositionIndex(){
 		int _CreateCardPositionIndex = 0;
 
