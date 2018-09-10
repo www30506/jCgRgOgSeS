@@ -51,9 +51,12 @@ public class GameView : MonoBehaviour {
 		}
 	}
 
-	public void ShowWinUI(float p_useTime){
+	public void ShowWinUI(float p_useTime, bool p_isGetStar){
 		winUI.SetActive (true);
 		useTimeText.text = I2.Loc.ScriptLocalization.Get("Game_UseTime") + p_useTime.ToString("#.##");
+		if (p_isGetStar) {
+			useTimeText.text += "獲得星星";
+		}
 		cardList.SetActive (false);
 	}
 

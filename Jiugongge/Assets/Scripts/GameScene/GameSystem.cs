@@ -299,7 +299,8 @@ public class GameSystem : MonoBehaviour {
 			if (IsWinTheGame () && systemStatue != SystemStatue.Win) {
 				print ("勝利");
 				systemStatue = SystemStatue.Win;
-				gameView.ShowWinUI (useTime);
+				bool _isGetStar = useTime < (completeTargets.Length * 15)? true: false;
+				gameView.ShowWinUI (useTime,_isGetStar);
 				SaveData ();
 			}
 		}
@@ -514,10 +515,6 @@ public class GameSystem : MonoBehaviour {
 		}
 
 		return true;
-	}
-
-	public void WinTheGame(){
-		BackToMenu ();
 	}
 }
 
