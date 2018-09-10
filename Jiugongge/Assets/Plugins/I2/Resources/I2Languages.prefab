@@ -54,7 +54,7 @@ MonoBehaviour:
   Google_WebServiceURL: https://script.google.com/macros/s/AKfycbyDxZxMGOEaWFDozbSsncMurGvYea1HB7o4-MzpcH7BhHVIHUIV/exec
   Google_SpreadsheetKey: 1hwZL-8WyFZZAcHN72DXVngjGnzRLj9iAIwsEI_HEZ30
   Google_SpreadsheetName: I2Loc Jiugongge Localization
-  Google_LastUpdatedVersion: 1536551838130
+  Google_LastUpdatedVersion: 1536586444769
   GoogleUpdateFrequency: 3
   mTerms:
   - Term: Menu_Setting
@@ -76,6 +76,18 @@ MonoBehaviour:
     - "UseTime\uFF1A"
     - "\u4F7F\u7528\u6642\u9593\uFF1A"
     - "\u4F7F\u7528\u65F6\u95F4\uFF1A"
+    Languages_Touch:
+    - 
+    - 
+    - 
+    Flags: 000000
+  - Term: Menu_Level
+    TermType: 0
+    Description: 
+    Languages:
+    - Level
+    - "\u95DC\u5361"
+    - "\u5173\u5361"
     Languages_Touch:
     - 
     - 

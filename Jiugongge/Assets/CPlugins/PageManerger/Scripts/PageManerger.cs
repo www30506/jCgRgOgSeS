@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PageType{Test_MainPage, Test_SecondPage, MainPage, SettingPage, LevelPage}
+public enum PageType{Test_MainPage, Test_SecondPage, MainPage, SettingPage, LevelPage, Level_2Page}
 public class PageManerger : MonoBehaviour {
 	
 	[Header("開啟和關閉頁面是否同時執行")]
