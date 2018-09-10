@@ -413,9 +413,52 @@ public class GameSystem : MonoBehaviour {
 				}
 			}
 			break;
+		case "Question":
+			StartCoroutine (IE_Question ());
+			break;
+		case "Marvel":
+			StartCoroutine(IE_Marvel(p_card));
+			break;
 		case "Null":
 			break;
 		}
+	}
+
+	private IEnumerator IE_Question(){
+		systemStatue = SystemStatue.Working;
+
+		for (int i = 0; i < cards.Count; i++) {
+			if (cards [i].GetCardType () == "Base") {
+				int _randomNumber = UnityEngine.Random.Range (0, 10);
+				int _positionIndex = cards [i].GetPositionIndex ();
+				cards[i].ResetCard(_randomNumber.ToString ());
+			}
+		}
+		yield return null;
+		systemStatue = SystemStatue.Idle;
+	}
+
+	private IEnumerator IE_Marvel(Card p_card){
+		List<string> _cardsID = new List<string> ();
+		//先取所有卡牌的位置存放在容器內
+		for (int i = 0; i < cards.Count; i++) {
+			if (cards [i].GetCardType () != "Player" && cards[i] != p_card) {
+				_cardsID.Add (cards [i].GetCardID ());
+			}
+		}
+
+		//再將所有卡牌重容器內隨機取得一個新位置
+		for (int i = 0; i < cards.Count; i++) {
+			if (cards [i].GetCardType () != "Player" && cards[i] != p_card) {
+				int _index = UnityEngine.Random.Range (0, _cardsID.Count);
+				string _newCardID = _cardsID[_index];
+				Debug.LogError ("_newCardID " + _newCardID);
+				cards [i].ResetCard (_newCardID);
+				_cardsID.RemoveAt (_index);
+			}
+		}
+
+		yield return null;
 	}
 
 	private bool IsNearby(int p_playerPositionIndex, int p_touchCardPositionIndex){

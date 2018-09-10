@@ -29,6 +29,10 @@ public class Card : MonoBehaviour {
 		
 	}
 
+	public string GetCardID(){
+		return cardID;
+	}
+
 	public void OnMouseUp(){
 		print("【點擊卡片】名稱 ： " + m_name +"  , cardID : " + cardID + "  , PositionIndex : " + positionIndex);
 		TouchCardEvent.Invoke (positionIndex);
@@ -54,6 +58,24 @@ public class Card : MonoBehaviour {
 		#endif
 
 		TouchCardEvent += p_onTouchCardEvent;
+	}
+
+	public void  ResetCard(string p_cardID){
+		cardID = p_cardID;
+		m_value = int.Parse(PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString());
+		m_type = PD.DATA ["CardTable"] [p_cardID] ["Type"].ToString();
+		m_name = PD.DATA ["CardTable"] [p_cardID] ["Name"].ToString();
+
+		//改變圖片現在沒用到
+		//ChangeSprite(p_cardID);
+		SetValue();
+		#if UNITY_EDITOR
+		this.gameObject.name = m_name;
+		#endif
+	}
+
+	public void ResetPositionIndex(int p_positionIndex){
+		SetPosition(p_positionIndex);
 	}
 
 	private void ChangeSprite(string p_cardID){
