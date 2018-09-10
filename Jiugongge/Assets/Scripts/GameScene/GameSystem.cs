@@ -218,12 +218,20 @@ public class GameSystem : MonoBehaviour {
 
 		if (_card.GetCardType() == "Player") {
 			playerCard = _card;
+			InitPlayerStartValue ();
 		}
 	}
 
 	private void CreateCards(){
 		for(int i=0; i< 9; i++){
 			StartCoroutine(CreateCard(initCardsID[i], i));
+		}
+	}
+
+	private void InitPlayerStartValue (){
+		if (Game.NOWLEVEL % 5 == 4) {
+			int _additionValue = UnityEngine.Random.Range (0, 10);
+			playerCard.AdditionValue (_additionValue);
 		}
 	}
 
@@ -452,7 +460,6 @@ public class GameSystem : MonoBehaviour {
 			if (cards [i].GetCardType () != "Player" && cards[i] != p_card) {
 				int _index = UnityEngine.Random.Range (0, _cardsID.Count);
 				string _newCardID = _cardsID[_index];
-				Debug.LogError ("_newCardID " + _newCardID);
 				cards [i].ResetCard (_newCardID);
 				_cardsID.RemoveAt (_index);
 			}
