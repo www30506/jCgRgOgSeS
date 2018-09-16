@@ -44,4 +44,9 @@ public class MainPage : Page_Base {
 		PageManerger.ChangePage (PageType.LevelPage);
 	}
 
+	public void ToEndlessMode(){
+		print ("無盡模式");
+		Game.endlessMode = true;
+		Game.LoadScene ("GameScene");
+	}
 }

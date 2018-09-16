@@ -44,6 +44,7 @@ public class Level_2Page : Page_Base {
 	public void ToGame(int p_level){
 		print ("進入遊戲 關卡：" + p_level);
 		Game.NOWLEVEL = p_level + (Game.CLASS * 50);
+		Game.endlessMode = false;
 		Game.LoadScene ("GameScene");
 	}
 }

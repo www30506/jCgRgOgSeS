@@ -102,6 +102,9 @@ public class Card : MonoBehaviour {
 		case "Marvel":
 			m_valueTextMesh.color = Color.blue;
 			break;
+		case "ChangeOperation":
+			m_valueTextMesh.color = Color.yellow;
+			break;
 		}
 
 		if (m_type == "Null") {

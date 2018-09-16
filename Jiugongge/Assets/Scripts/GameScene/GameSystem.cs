@@ -18,6 +18,7 @@ public class GameSystem : MonoBehaviour {
 	[SerializeField]private string[] drawCardsList;
 	[SerializeField]private float actionValue;
 	[SerializeField]private float useTime;
+	[SerializeField]private int changeOperationCount = 9;
 	[Header("====")]
 
 	[SerializeField]private int drawCardIndex;
@@ -33,18 +34,41 @@ public class GameSystem : MonoBehaviour {
 	private int prePlayerPositionIndex;
 
 	void Start () {
-		InitDrawCardList ();
-		LoadLevelData();
-		CreateCardPool();
-		CreateCards();
-		CreateCompleteTarget ();
-		InitActionValue ();
+		if (Game.endlessMode) {
+			InitDrawCardList ();
+			CreateCardPool ();
+			CreateCards ();
+			CreateCompleteTarget ();
+			InitActionValue ();
+		} 
+		else {
+			InitDrawCardList ();
+			CreateCardPool ();
+			CreateCards ();
+			CreateCompleteTarget ();
+			InitActionValue ();
+		}
 	}
+
 	//1>2>秒>3>4>!>5>6>秒>7>8>?>9>0>秒>LOOP
 	//第五關
 	//0~9+秒數卡 隨機
 	private void InitDrawCardList(){
-		if ((Game.NOWLEVEL + 1) % 5 == 0) {
+		if (Game.endlessMode) {
+			drawCardsList = new string[11];
+			drawCardsList [0] = "1";
+			drawCardsList [1] = "2";
+			drawCardsList [2] = "3";
+			drawCardsList [3] = "4";
+			drawCardsList [4] = "5";
+			drawCardsList [5] = "6";
+			drawCardsList [6] = "7";
+			drawCardsList [7] = "8";
+			drawCardsList [8] = "9";
+			drawCardsList [9] = "13";
+			drawCardsList [10] = "14";
+		}
+		else if ((Game.NOWLEVEL + 1) % 5 == 0) {
 			drawCardsList = new string[11];
 			drawCardsList [0] = "1";
 			drawCardsList [1] = "2";
@@ -182,10 +206,6 @@ public class GameSystem : MonoBehaviour {
 		}
 
 		gameView.InitCompleteTarget (completeTargets);
-	}
-
-	private void LoadLevelData(){
-		
 	}
 
 	private void CreateCardPool(){;
@@ -439,6 +459,10 @@ public class GameSystem : MonoBehaviour {
 		case "Marvel":
 			StartCoroutine(IE_Marvel(p_card));
 			break;
+		case "ChangeOperation":
+			Debug.LogError ("增加換運算符號的次數 " + p_card.GetCardValue());
+			changeOperationCount += p_card.GetCardValue();
+			break;
 		case "Null":
 			break;
 		}
@@ -450,7 +474,6 @@ public class GameSystem : MonoBehaviour {
 		for (int i = 0; i < cards.Count; i++) {
 			if (cards [i].GetCardType () == "Base") {
 				int _randomNumber = UnityEngine.Random.Range (0, 10);
-				int _positionIndex = cards [i].GetPositionIndex ();
 				cards[i].ResetCard(_randomNumber.ToString ());
 			}
 		}
@@ -517,33 +540,3 @@ public class GameSystem : MonoBehaviour {
 		return true;
 	}
 }
-
-/*
-五大關	每關100小關
-1	>	1
-2	>	2,3
-3	>	4,5,6
-4	>	7,8,9,10
-5	>	隨機1~10  目標五個
-
-6	>	11
-7	>	12,13
-8	>	14,15,16
-9	>	17,18,19,20
-10	>	隨機11~20  目標五個
-
-
-
-%5 = 1	>	
-
-leve%5
-%10 = 2	>	
-
-
-出排順序
-第1~4關
-1>2>秒>3>4>!>5>6>秒>7>8>?>9>0>秒>LOOP
-
-第5關
-[隨機]:0~9+秒數卡
-*/
