@@ -40,6 +40,8 @@ public class GameSystem : MonoBehaviour {
 			CreateCards ();
 			CreateCompleteTarget ();
 			InitActionValue ();
+			gameView.ShowChangeOperationCountText ();
+			gameView.SetChangeOperationCountText (changeOperationCount);
 		} 
 		else {
 			InitDrawCardList ();
@@ -47,6 +49,7 @@ public class GameSystem : MonoBehaviour {
 			CreateCards ();
 			CreateCompleteTarget ();
 			InitActionValue ();
+			gameView.HideChangeOperationCountText ();
 		}
 	}
 
@@ -55,7 +58,7 @@ public class GameSystem : MonoBehaviour {
 	//0~9+秒數卡 隨機
 	private void InitDrawCardList(){
 		if (Game.endlessMode) {
-			drawCardsList = new string[11];
+			drawCardsList = new string[12];
 			drawCardsList [0] = "1";
 			drawCardsList [1] = "2";
 			drawCardsList [2] = "3";
@@ -67,6 +70,7 @@ public class GameSystem : MonoBehaviour {
 			drawCardsList [8] = "9";
 			drawCardsList [9] = "13";
 			drawCardsList [10] = "14";
+			drawCardsList [11] = "15";
 		}
 		else if ((Game.NOWLEVEL + 1) % 5 == 0) {
 			drawCardsList = new string[11];

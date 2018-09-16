@@ -11,6 +11,8 @@ public class GameView : MonoBehaviour {
 	[SerializeField]private GameObject cardList;
 	[SerializeField]private Text useTimeText;
 	[SerializeField]private UTweenColor actionValueEffect;
+	[SerializeField]private Text changeOperationCountText;
+	[SerializeField]private GameObject changeOperationCountObj;
 
 	void Start () {
 		
@@ -63,5 +65,17 @@ public class GameView : MonoBehaviour {
 	public void ShowLossUI(){
 		lossUI.SetActive (true);
 		cardList.SetActive (false);
+	}
+
+	public void ShowChangeOperationCountText(){
+		changeOperationCountObj.SetActive (true);
+	}
+
+	public void HideChangeOperationCountText(){
+		changeOperationCountObj.SetActive (false);
+	}
+
+	public void SetChangeOperationCountText(int p_count){
+		changeOperationCountText.text = p_count.ToString ();
 	}
 }
