@@ -38,7 +38,7 @@ public class GameSystem : MonoBehaviour {
 			InitDrawCardList ();
 			CreateCardPool ();
 			CreateCards ();
-			CreateCompleteTarget ();
+			CreateCompleteTarget_EndlessMode ();
 			InitActionValue ();
 			gameView.ShowChangeOperationCountText ();
 			gameView.SetChangeOperationCountText (changeOperationCount);
@@ -319,14 +319,24 @@ public class GameSystem : MonoBehaviour {
 				}
 			}
 
-			CheckCompleteTarget ();
+			if (Game.endlessMode) {
+				CheckCompleteTarget ();
+				if (IsAllTargetsComplete ()) {
+					print ("創造新的目標");
+					CreateCompleteTarget_EndlessMode ();
+					CheckCompleteTarget ();
+				}
+			}
+			else {
+				CheckCompleteTarget ();
 
-			if (IsWinTheGame () && systemStatue != SystemStatue.Win) {
-				print ("勝利");
-				systemStatue = SystemStatue.Win;
-				bool _isGetStar = useTime < (completeTargets.Length * 15)? true: false;
-				gameView.ShowWinUI (useTime,_isGetStar);
-				SaveData ();
+				if (IsAllTargetsComplete () && systemStatue != SystemStatue.Win) {
+					print ("勝利");
+					systemStatue = SystemStatue.Win;
+					bool _isGetStar = useTime < (completeTargets.Length * 15) ? true : false;
+					gameView.ShowWinUI (useTime, _isGetStar);
+					SaveData ();
+				}
 			}
 		}
 
@@ -548,7 +558,7 @@ public class GameSystem : MonoBehaviour {
 		}
 	}
 
-	private bool IsWinTheGame(){
+	private bool IsAllTargetsComplete(){
 		for (int i = 0; i < IscompleteTargets.Length; i++) {
 			if (IscompleteTargets [i] == false) {
 				return false;
@@ -556,5 +566,55 @@ public class GameSystem : MonoBehaviour {
 		}
 
 		return true;
+	}
+
+	private void CreateCompleteTarget_EndlessMode(){
+		int _tagetCount = UnityEngine.Random.Range (1, 6);
+		string _targetRange = "1~10";
+
+		List<int> _rangeGroup = new List<int> ();
+		print ("_targetRange : " + _targetRange);
+		if (_targetRange.Contains ("~")) {
+			string[] _aaa = Regex.Split (_targetRange, "~");
+			int _startNumber = int.Parse(_aaa[0]);
+			int _endNumber = int.Parse (_aaa [1]);
+
+			int _tempNumber = _startNumber;
+			while(_tempNumber <= _endNumber){
+				_rangeGroup.Add (_tempNumber++);
+			}
+		}
+		else{
+			string[] _targetGroup;
+			_targetGroup = Regex.Split (_targetRange, ",");
+
+			for (int i = 0; i < _targetGroup.Length; i++) {
+				_rangeGroup.Add (int.Parse(_targetGroup[i]));
+			}
+		}
+
+
+		completeTargets = new int[_tagetCount];
+		IscompleteTargets = new bool[_tagetCount];
+		for (int i = 0; i < completeTargets.Length; i++) {
+
+			int _index = UnityEngine.Random.Range (0, _rangeGroup.Count);
+			completeTargets [i] = _rangeGroup[_index];
+			_rangeGroup.RemoveAt (_index);
+
+		}
+
+		//重小排到大
+		for (int i = 0; i < completeTargets.Length-1; i++) {
+			for (int j = i + 1; j < completeTargets.Length; j++) {
+				if (completeTargets [i] > completeTargets [j]) {
+					int _temp = completeTargets [i];
+					completeTargets [i] = completeTargets [j];
+					completeTargets [j] = _temp;
+				}
+			}
+		}
+
+		gameView.InitCompleteTarget (completeTargets);
 	}
 }
