@@ -465,7 +465,6 @@ public class GameSystem : MonoBehaviour {
 			StartCoroutine(IE_Marvel(p_card));
 			break;
 		case "ChangeOperation":
-			Debug.LogError ("增加換運算符號的次數 " + p_card.GetCardValue ());
 			changeOperationCount += p_card.GetCardValue ();
 			gameView.SetChangeOperationCountText (changeOperationCount);
 			break;
