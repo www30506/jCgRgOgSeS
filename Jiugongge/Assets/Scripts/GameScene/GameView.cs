@@ -13,6 +13,7 @@ public class GameView : MonoBehaviour {
 	[SerializeField]private UTweenColor actionValueEffect;
 	[SerializeField]private Text changeOperationCountText;
 	[SerializeField]private GameObject changeOperationCountObj;
+	[SerializeField]private Image[] operationImages;
 
 	void Start () {
 		
@@ -77,5 +78,31 @@ public class GameView : MonoBehaviour {
 
 	public void SetChangeOperationCountText(int p_count){
 		changeOperationCountText.text = p_count.ToString ();
+	}
+
+	public void SetOperationBtnActive(string p_Operation){
+		int _index = -1;
+		if (p_Operation == "Addition") {
+			_index = 0;
+		}
+		else if (p_Operation == "Subtraction") {
+			_index = 1;
+		}
+		else if (p_Operation == "Multiplication") {
+			_index = 2;
+		}
+		else if (p_Operation == "Division") {
+			_index = 3;
+		}
+
+
+		for (int i = 0; i < operationImages.Length; i++) {
+			if (i == _index) {
+				operationImages [i].color = Color.green;
+			} 
+			else {
+				operationImages [i].color = Color.white;
+			}
+		}
 	}
 }

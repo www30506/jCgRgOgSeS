@@ -51,6 +51,7 @@ public class GameSystem : MonoBehaviour {
 			InitActionValue ();
 			gameView.HideChangeOperationCountText ();
 		}
+		gameView.SetOperationBtnActive ("Addition");
 	}
 
 	//1>2>秒>3>4>!>5>6>秒>7>8>?>9>0>秒>LOOP
@@ -522,7 +523,20 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	public void OnChangeOperation(string p_Operation){
-		operationState = (OperationType)Enum.Parse (typeof(OperationType), p_Operation);
+		if (Game.endlessMode) {
+			if (changeOperationCount > 0) {
+				if (operationState != (OperationType)Enum.Parse (typeof(OperationType), p_Operation)) {
+					changeOperationCount--;
+					operationState = (OperationType)Enum.Parse (typeof(OperationType), p_Operation);
+					gameView.SetChangeOperationCountText (changeOperationCount);
+					gameView.SetOperationBtnActive (p_Operation);
+				}
+			}
+		}
+		else {
+			operationState = (OperationType)Enum.Parse (typeof(OperationType), p_Operation);
+			gameView.SetOperationBtnActive (p_Operation);
+		}
 	}
 
 	private void CheckCompleteTarget(){
