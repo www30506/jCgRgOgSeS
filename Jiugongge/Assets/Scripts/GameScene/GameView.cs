@@ -33,6 +33,12 @@ public class GameView : MonoBehaviour {
 		}
 	}
 
+	public void ResetCompleteTargetEff(){
+		for (int i = 0; i < completeTargetText.Length; i++) {
+			completeTargetText [i].color = Color.black;
+		}
+	}
+
 	public void CompleteTargetEff(int p_index){
 		completeTargetText [p_index].color = Color.green;
 	}

@@ -32,6 +32,7 @@ public class GameSystem : MonoBehaviour {
 	private SystemStatue systemStatue = SystemStatue.Idle;
 	[SerializeField]private Card playerCard;
 	private int prePlayerPositionIndex;
+	private int endlessModeDrawCardCount = 0;
 
 	void Start () {
 		if (Game.endlessMode) {
@@ -154,8 +155,13 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	private void InitActionValue(){
-		int _tagetCount = GetTargetCount (Game.NOWLEVEL+1);
-		actionValue = _tagetCount * GlobalData.TARGET_TIME;
+		if (Game.endlessMode) {
+			actionValue = GlobalData.ENDLESS_MODE_START_TIME;
+		} 
+		else {
+			int _tagetCount = GetTargetCount (Game.NOWLEVEL + 1);
+			actionValue = _tagetCount * GlobalData.TARGET_TIME;
+		}
 		gameView.SetActionValue (actionValue);
 	}
 
@@ -305,7 +311,20 @@ public class GameSystem : MonoBehaviour {
 
 			yield return StartCoroutine (IE_MoveCard (p_touchCardPositionIndex));
 
-			if (Game.NOWLEVEL % 5 == 4) {
+			if (Game.endlessMode) {
+				endlessModeDrawCardCount++;
+				if (endlessModeDrawCardCount % 4 == 0) {
+					string[] _skillCards = new string[]{"13", "14", "15"};
+					drawCardIndex = UnityEngine.Random.Range (0, _skillCards.Length);
+					yield return StartCoroutine (CreateCard (_skillCards [drawCardIndex], GetCreateCardPositionIndex ()));
+				} 
+				else {
+					string[] _skillCards = new string[]{"0","1","2","3","4","5","6","7","8","9"};
+					drawCardIndex = UnityEngine.Random.Range (0, _skillCards.Length);
+					yield return StartCoroutine (CreateCard (_skillCards [drawCardIndex], GetCreateCardPositionIndex ()));
+				}
+			}
+			else if (Game.NOWLEVEL % 5 == 4) {
 				drawCardIndex = UnityEngine.Random.Range (0, drawCardsList.Length);
 				yield return StartCoroutine (CreateCard (drawCardsList [drawCardIndex], GetCreateCardPositionIndex ()));
 			} 
@@ -319,17 +338,17 @@ public class GameSystem : MonoBehaviour {
 				}
 			}
 
+			CheckCompleteTarget ();
+
 			if (Game.endlessMode) {
-				CheckCompleteTarget ();
 				if (IsAllTargetsComplete ()) {
 					print ("創造新的目標");
-					CreateCompleteTarget_EndlessMode ();
 					CheckCompleteTarget ();
+					CreateCompleteTarget_EndlessMode ();
+					gameView.ResetCompleteTargetEff ();
 				}
 			}
 			else {
-				CheckCompleteTarget ();
-
 				if (IsAllTargetsComplete () && systemStatue != SystemStatue.Win) {
 					print ("勝利");
 					systemStatue = SystemStatue.Win;
@@ -554,6 +573,10 @@ public class GameSystem : MonoBehaviour {
 			if (playerCard.GetCardValue () == completeTargets [i] && IscompleteTargets [i] == false) {
 				IscompleteTargets [i] = true;
 				gameView.CompleteTargetEff (i);
+				if (Game.endlessMode) {
+					actionValue += GlobalData.ENDLESS_MODE_COMPLETE_ADD_TIME;
+					gameView.SetActionValue (actionValue);
+				}
 			}
 		}
 	}
