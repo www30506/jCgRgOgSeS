@@ -7,6 +7,7 @@ public class GameView : MonoBehaviour {
 	[SerializeField]private Text[] completeTargetText;
 	[SerializeField]private Text actionValueText;
 	[SerializeField]private GameObject winUI;
+	[SerializeField]private GameObject winUI_NextLevelObj;
 	[SerializeField]private GameObject lossUI;
 	[SerializeField]private GameObject cardList;
 	[SerializeField]private Text useTimeText;
@@ -62,6 +63,13 @@ public class GameView : MonoBehaviour {
 
 	public void ShowWinUI(float p_useTime, bool p_isGetStar){
 		winUI.SetActive (true);
+		if (Game.endlessMode == false && Game.NOWLEVEL != 499) {
+			winUI_NextLevelObj.SetActive (true);
+		} 
+		else {
+			winUI_NextLevelObj.SetActive (false);
+		}
+
 		useTimeText.text = I2.Loc.ScriptLocalization.Get("Game_UseTime") + p_useTime.ToString("#.##");
 		if (p_isGetStar) {
 			useTimeText.text += "獲得星星";

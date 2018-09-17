@@ -267,6 +267,10 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	void Update () {
+		if (Input.GetKeyUp (KeyCode.A)) {
+			Debug.LogError (Game.CLASS);
+			Debug.LogError (Game.NOWLEVEL);
+		}
 		actionValue -= Time.deltaTime;
 		useTime += Time.deltaTime;
 
@@ -639,5 +643,15 @@ public class GameSystem : MonoBehaviour {
 		}
 
 		gameView.InitCompleteTarget (completeTargets);
+	}
+
+	public void OnNextLevel(){
+		Game.NOWLEVEL++;
+		if (Game.NOWLEVEL > 50) {
+			Game.NOWLEVEL = 1;
+			Game.CLASS++;
+		}
+		Game.endlessMode = false;
+		Game.LoadScene ("GameScene");
 	}
 }
