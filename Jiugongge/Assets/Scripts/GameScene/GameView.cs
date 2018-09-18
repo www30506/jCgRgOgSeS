@@ -27,6 +27,7 @@ public class GameView : MonoBehaviour {
 	public void InitCompleteTarget(int[] p_completeTarget){
 		for (int i = 0; i < p_completeTarget.Length; i++) {
 			completeTargetText [i].text = p_completeTarget [i].ToString ();
+			completeTargetText [i].transform.parent.gameObject.SetActive (true);
 		}
 
 		for (int i = p_completeTarget.Length; i < 5; i++) {
@@ -63,6 +64,7 @@ public class GameView : MonoBehaviour {
 
 	public void ShowWinUI(float p_useTime, bool p_isGetStar){
 		winUI.SetActive (true);
+
 		if (Game.endlessMode == false && Game.NOWLEVEL != 499) {
 			winUI_NextLevelObj.SetActive (true);
 		} 
