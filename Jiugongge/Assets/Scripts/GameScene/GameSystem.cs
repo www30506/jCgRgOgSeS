@@ -18,7 +18,7 @@ public class GameSystem : MonoBehaviour {
 	[SerializeField]private string[] drawCardsList;
 	[SerializeField]private float actionValue;
 	[SerializeField]private float useTime;
-	[SerializeField]private int changeOperationCount = 9;
+	[SerializeField]private int changeOperationCount;
 	[Header("====")]
 
 	[SerializeField]private int drawCardIndex;
@@ -36,6 +36,7 @@ public class GameSystem : MonoBehaviour {
 
 	void Start () {
 		if (Game.endlessMode) {
+			changeOperationCount = GlobalData.ENDLESS_MODE_START_changeOperationCount;
 			InitDrawCardList ();
 			CreateCardPool ();
 			CreateCards ();
@@ -347,6 +348,8 @@ public class GameSystem : MonoBehaviour {
 			if (Game.endlessMode) {
 				if (IsAllTargetsComplete ()) {
 					print ("創造新的目標");
+					changeOperationCount += GlobalData.ENDLESS_MODE_COMPLETE_TARGET_ADD_changeOperationCount;
+					gameView.SetChangeOperationCountText (changeOperationCount);
 					CheckCompleteTarget ();
 					CreateCompleteTarget_EndlessMode ();
 					gameView.ResetCompleteTargetEff ();
