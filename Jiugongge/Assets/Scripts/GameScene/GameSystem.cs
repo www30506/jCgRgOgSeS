@@ -647,10 +647,6 @@ public class GameSystem : MonoBehaviour {
 
 	public void OnNextLevel(){
 		Game.NOWLEVEL++;
-		if (Game.NOWLEVEL > 50) {
-			Game.NOWLEVEL = 1;
-			Game.CLASS++;
-		}
 		Game.endlessMode = false;
 		Game.LoadScene ("GameScene");
 	}
