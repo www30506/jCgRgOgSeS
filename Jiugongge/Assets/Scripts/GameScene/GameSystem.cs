@@ -597,7 +597,7 @@ public class GameSystem : MonoBehaviour {
 
 	private void CreateCompleteTarget_EndlessMode(){
 		int _tagetCount = UnityEngine.Random.Range (1, 6);
-		string _targetRange = "1~10";
+		string _targetRange = GlobalData.ENDLESS_MODE_TARGET_NUMBER_START + "~" + GlobalData.ENDLESS_MODE_TARGET_NUMBER_END;
 
 		List<int> _rangeGroup = new List<int> ();
 		print ("_targetRange : " + _targetRange);
