@@ -33,6 +33,7 @@ public class GameSystem : MonoBehaviour {
 	[SerializeField]private Card playerCard;
 	private int prePlayerPositionIndex;
 	private int endlessModeDrawCardCount = 0;
+	private float getStarTime = 0;
 
 	void Start () {
 		if (Game.endlessMode) {
@@ -52,6 +53,7 @@ public class GameSystem : MonoBehaviour {
 			CreateCompleteTarget ();
 			InitActionValue ();
 			gameView.HideChangeOperationCountText ();
+			getStarTime = completeTargets.Length * 15;
 		}
 		gameView.SetOperationBtnActive ("Addition");
 	}
@@ -359,7 +361,7 @@ public class GameSystem : MonoBehaviour {
 				if (IsAllTargetsComplete () && systemStatue != SystemStatue.Win) {
 					print ("勝利");
 					systemStatue = SystemStatue.Win;
-					bool _isGetStar = useTime < (completeTargets.Length * 15) ? true : false;
+					bool _isGetStar = useTime < getStarTime ? true : false;
 					gameView.ShowWinUI (useTime, _isGetStar);
 					SaveData ();
 				}
@@ -371,7 +373,34 @@ public class GameSystem : MonoBehaviour {
 	}
 		
 	private void SaveData(){
-		
+		PlayerData _playerData = PlayerData.Create ();
+
+		if (Game.endlessMode) {
+			float _bestTime = _playerData.endlessModeData.bestTime;
+			Debug.LogError ("useTime " + useTime);
+			if (useTime > _bestTime) {
+				_playerData.endlessModeData.bestTime = useTime;
+			}
+
+		}
+		else{
+			Debug.LogError ("Game.NOWLEVEL " + Game.NOWLEVEL);
+			float _bestTime = _playerData.levelDatas [Game.NOWLEVEL].BestTime;
+			if (_bestTime == 0)
+				_bestTime = 9999;
+
+			if (useTime < _bestTime) {
+				_playerData.levelDatas [Game.NOWLEVEL].BestTime = useTime;
+			}
+			_playerData.levelDatas [Game.NOWLEVEL].isComplete = true;
+
+			bool _isGetStar = useTime < getStarTime ? true : false;
+			if(_isGetStar){
+				_playerData.levelDatas [Game.NOWLEVEL].getStart = _isGetStar;
+			}
+		}
+
+		_playerData.Save();
 	}
 
 	private int GetCreateCardPositionIndex(){
