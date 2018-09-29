@@ -296,7 +296,7 @@ public class GameSystem : MonoBehaviour {
 				gameView.ShowendlessModeGameOverUI(endlessMode_GetScore , useTime);
 				SaveData ();
 			} 
-			else {	
+			else {
 				gameView.ShowLossUI ();
 			}
 		}
@@ -386,7 +386,6 @@ public class GameSystem : MonoBehaviour {
 
 		if (Game.endlessMode) {
 			float _bestTime = _playerData.endlessModeData.bestTime;
-			Debug.LogError ("useTime " + useTime);
 			if (useTime > _bestTime) {
 				_playerData.endlessModeData.bestTime = useTime;
 			}
@@ -397,7 +396,6 @@ public class GameSystem : MonoBehaviour {
 			}	
 		}
 		else{
-			Debug.LogError ("Game.NOWLEVEL " + Game.NOWLEVEL);
 			float _bestTime = _playerData.levelDatas [Game.NOWLEVEL].BestTime;
 			if (_bestTime == 0)
 				_bestTime = 9999;
