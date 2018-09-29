@@ -16,7 +16,7 @@ public class GameSystem : MonoBehaviour {
 	[SerializeField]private OperationType operationState= OperationType.Addition;
 	[SerializeField]private string[] initCardsID;
 	[SerializeField]private string[] drawCardsList;
-	[SerializeField]private float actionValue;
+	[SerializeField]private float timeLeft;
 	[SerializeField]private float useTime;
 	[SerializeField]private int changeOperationCount;
 	[Header("====")]
@@ -34,6 +34,7 @@ public class GameSystem : MonoBehaviour {
 	private int prePlayerPositionIndex;
 	private int endlessModeDrawCardCount = 0;
 	private float getStarTime = 0;
+	private int endlessMode_GetScore = 0;
 
 	void Start () {
 		if (Game.endlessMode) {
@@ -159,18 +160,18 @@ public class GameSystem : MonoBehaviour {
 
 	private void InitActionValue(){
 		if (Game.endlessMode) {
-			actionValue = GlobalData.ENDLESS_MODE_START_TIME;
+			timeLeft = GlobalData.ENDLESS_MODE_START_TIME;
 		} 
 		else {
 			int _tagetCount = GetTargetCount (Game.NOWLEVEL + 1);
-			actionValue = _tagetCount * GlobalData.TARGET_TIME;
+			timeLeft = _tagetCount * GlobalData.TARGET_TIME;
 		}
-		gameView.SetActionValue (actionValue);
+		gameView.SetActionValue (timeLeft);
 	}
 
 	private void SetActionValue(int p_value){
-		actionValue += p_value;
-		gameView.SetActionValue (actionValue);
+		timeLeft += p_value;
+		gameView.SetActionValue (timeLeft);
 	}
 
 	private void CreateCompleteTarget(){
@@ -274,22 +275,30 @@ public class GameSystem : MonoBehaviour {
 			Debug.LogError (Game.CLASS);
 			Debug.LogError (Game.NOWLEVEL);
 		}
-		actionValue -= Time.deltaTime;
+		timeLeft -= Time.deltaTime;
 		useTime += Time.deltaTime;
 
-		gameView.SetActionValue (actionValue);
-		if (actionValue < 10) {
+		gameView.SetActionValue (timeLeft);
+		if (timeLeft < 10) {
 			gameView.ActionValueFlash (true);
 		} 
 		else {
 			gameView.ActionValueFlash (false);
 		}
 
-		if (actionValue < 0 && systemStatue != SystemStatue.Loss) {
+
+		if (timeLeft < 0 && systemStatue != SystemStatue.Loss) {
 			print ("【遊戲結束】 時間結束");
 			systemStatue = SystemStatue.Loss;
-			gameView.ShowLossUI ();
 
+			if (Game.endlessMode) {
+				endlessMode_GetScore = (int)(useTime) * 10;
+				gameView.ShowendlessModeGameOverUI(endlessMode_GetScore , useTime);
+				SaveData ();
+			} 
+			else {	
+				gameView.ShowLossUI ();
+			}
 		}
 	}
 
@@ -382,6 +391,10 @@ public class GameSystem : MonoBehaviour {
 				_playerData.endlessModeData.bestTime = useTime;
 			}
 
+			float _maxScore = _playerData.endlessModeData.maxScore;
+			if (endlessMode_GetScore > _maxScore) {
+				_playerData.endlessModeData.maxScore = endlessMode_GetScore;
+			}	
 		}
 		else{
 			Debug.LogError ("Game.NOWLEVEL " + Game.NOWLEVEL);
@@ -610,8 +623,8 @@ public class GameSystem : MonoBehaviour {
 				IscompleteTargets [i] = true;
 				gameView.CompleteTargetEff (i);
 				if (Game.endlessMode) {
-					actionValue += GlobalData.ENDLESS_MODE_COMPLETE_ADD_TIME;
-					gameView.SetActionValue (actionValue);
+					timeLeft += GlobalData.ENDLESS_MODE_COMPLETE_ADD_TIME;
+					gameView.SetActionValue (timeLeft);
 				}
 			}
 		}

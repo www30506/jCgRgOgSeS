@@ -15,6 +15,7 @@ public class GameView : MonoBehaviour {
 	[SerializeField]private Text changeOperationCountText;
 	[SerializeField]private GameObject changeOperationCountObj;
 	[SerializeField]private Image[] operationImages;
+	[SerializeField]private GameObject endlessModeGameOverUIObj;
 
 	void Start () {
 		
@@ -77,6 +78,13 @@ public class GameView : MonoBehaviour {
 			useTimeText.text += "獲得星星";
 		}
 		cardList.SetActive (false);
+	}
+
+	public void ShowendlessModeGameOverUI(float p_getScore, float p_useTime){
+		cardList.SetActive (false);
+		endlessModeGameOverUIObj.SetActive (true);
+		endlessModeGameOverUIObj.transform.Find ("UseTime").GetComponent<Text> ().text = "時間 ：" +  p_useTime.ToString ("#.##");
+		endlessModeGameOverUIObj.transform.Find ("Score").GetComponent<Text> ().text = "分數 ：" + p_getScore.ToString ();
 	}
 
 	public void ShowLossUI(){
