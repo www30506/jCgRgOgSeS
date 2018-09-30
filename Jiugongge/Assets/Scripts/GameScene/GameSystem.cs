@@ -35,6 +35,7 @@ public class GameSystem : MonoBehaviour {
 	private int endlessModeDrawCardCount = 0;
 	private float getStarTime = 0;
 	private int endlessMode_GetScore = 0;
+	public int endlessMode_CompleteCount = 0;
 
 	void Start () {
 		if (Game.endlessMode) {
@@ -65,7 +66,7 @@ public class GameSystem : MonoBehaviour {
 	//0~9+秒數卡 隨機
 	private void InitDrawCardList(){
 		if (Game.endlessMode) {
-			drawCardsList = new string[12];
+			drawCardsList = new string[13];
 			drawCardsList [0] = "1";
 			drawCardsList [1] = "2";
 			drawCardsList [2] = "3";
@@ -75,9 +76,10 @@ public class GameSystem : MonoBehaviour {
 			drawCardsList [6] = "7";
 			drawCardsList [7] = "8";
 			drawCardsList [8] = "9";
-			drawCardsList [9] = "13";
+			drawCardsList [9] = "10";
 			drawCardsList [10] = "14";
 			drawCardsList [11] = "15";
+			drawCardsList [12] = "16";
 		}
 		else if ((Game.NOWLEVEL + 1) % 5 == 0) {
 			drawCardsList = new string[11];
@@ -90,25 +92,24 @@ public class GameSystem : MonoBehaviour {
 			drawCardsList [6] = "7";
 			drawCardsList [7] = "8";
 			drawCardsList [8] = "9";
-			drawCardsList [9] = "10";
-			drawCardsList [10] = "0";
+			drawCardsList [9] = "11";
 		} else {
 			drawCardsList = new string[15];
 			drawCardsList [0] = "1";
 			drawCardsList [1] = "2";
-			drawCardsList [2] = "10";
+			drawCardsList [2] = "11";
 			drawCardsList [3] = "3";
 			drawCardsList [4] = "4";
-			drawCardsList [5] = "13";
+			drawCardsList [5] = "14";
 			drawCardsList [6] = "5";
 			drawCardsList [7] = "6";
-			drawCardsList [8] = "10";
+			drawCardsList [8] = "11";
 			drawCardsList [9] = "7";
 			drawCardsList [10] = "8";
-			drawCardsList [11] = "14";
+			drawCardsList [11] = "15";
 			drawCardsList [12] = "9";
 			drawCardsList [13] = "0";
-			drawCardsList [14] = "10";
+			drawCardsList [14] = "11";
 		}
 	}
 
@@ -166,7 +167,12 @@ public class GameSystem : MonoBehaviour {
 		else {
 //			int _tagetCount = GetTargetCount (Game.NOWLEVEL + 1);
 //			timeLeft = _tagetCount * GlobalData.TARGET_TIME;
-			timeLeft = GlobalData.MAIN_MODE_TIMELEFT;
+			if ((Game.NOWLEVEL + 1) % 5 == 0) {
+				timeLeft = GlobalData.MAIN_MODE_TIMELEFT_Random;
+			} 
+			else {
+				timeLeft = GlobalData.MAIN_MODE_TIMELEFT;
+			}
 		}
 		gameView.SetActionValue (timeLeft);
 	}
@@ -294,7 +300,7 @@ public class GameSystem : MonoBehaviour {
 			systemStatue = SystemStatue.Loss;
 
 			if (Game.endlessMode) {
-				endlessMode_GetScore = (int)(useTime) * 10;
+				endlessMode_GetScore = endlessMode_CompleteCount;
 				gameView.ShowendlessModeGameOverUI(endlessMode_GetScore , useTime);
 				SaveData ();
 			} 
@@ -329,32 +335,32 @@ public class GameSystem : MonoBehaviour {
 
 			yield return StartCoroutine (IE_MoveCard (p_touchCardPositionIndex));
 
-			if (Game.endlessMode) {
+//			if (Game.endlessMode) {
 				endlessModeDrawCardCount++;
 				if (endlessModeDrawCardCount % 4 == 0) {
-					string[] _skillCards = new string[]{"13", "14", "15"};
+					string[] _skillCards = new string[]{"14", "15", "16"};
 					drawCardIndex = UnityEngine.Random.Range (0, _skillCards.Length);
 					yield return StartCoroutine (CreateCard (_skillCards [drawCardIndex], GetCreateCardPositionIndex ()));
 				} 
 				else {
-					string[] _skillCards = new string[]{"0","1","2","3","4","5","6","7","8","9"};
+					string[] _skillCards = new string[]{"10","1","2","3","4","5","6","7","8","9"};
 					drawCardIndex = UnityEngine.Random.Range (0, _skillCards.Length);
 					yield return StartCoroutine (CreateCard (_skillCards [drawCardIndex], GetCreateCardPositionIndex ()));
 				}
-			}
-			else if (Game.NOWLEVEL % 5 == 4) {
-				drawCardIndex = UnityEngine.Random.Range (0, drawCardsList.Length);
-				yield return StartCoroutine (CreateCard (drawCardsList [drawCardIndex], GetCreateCardPositionIndex ()));
-			} 
-			else {
-				yield return StartCoroutine (CreateCard (drawCardsList [drawCardIndex], GetCreateCardPositionIndex ()));
-
-				drawCardIndex++;
-
-				if (drawCardIndex > drawCardsList.Length - 1) {
-					drawCardIndex = 0;
-				}
-			}
+//			}
+//			else if (Game.NOWLEVEL % 5 == 4) {
+//				drawCardIndex = UnityEngine.Random.Range (0, drawCardsList.Length);
+//				yield return StartCoroutine (CreateCard (drawCardsList [drawCardIndex], GetCreateCardPositionIndex ()));
+//			} 
+//			else {
+//				yield return StartCoroutine (CreateCard (drawCardsList [drawCardIndex], GetCreateCardPositionIndex ()));
+//
+//				drawCardIndex++;
+//
+//				if (drawCardIndex > drawCardsList.Length - 1) {
+//					drawCardIndex = 0;
+//				}
+//			}
 
 			CheckCompleteTarget ();
 
@@ -621,10 +627,13 @@ public class GameSystem : MonoBehaviour {
 		for (int i = 0; i < IscompleteTargets.Length; i++) {
 			if (playerCard.GetCardValue () == completeTargets [i] && IscompleteTargets [i] == false) {
 				IscompleteTargets [i] = true;
+
 				gameView.CompleteTargetEff (i);
 				if (Game.endlessMode) {
 					timeLeft += GlobalData.ENDLESS_MODE_COMPLETE_ADD_TIME;
 					gameView.SetActionValue (timeLeft);
+					endlessMode_CompleteCount++;
+					Debug.LogError (endlessMode_CompleteCount);
 				}
 			}
 		}
