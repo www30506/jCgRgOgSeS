@@ -54,7 +54,8 @@ public class GameSystem : MonoBehaviour {
 			CreateCompleteTarget ();
 			InitActionValue ();
 			gameView.HideChangeOperationCountText ();
-			getStarTime = completeTargets.Length * 15;
+//			getStarTime = completeTargets.Length * 15;
+			getStarTime = GlobalData.MAIN_MODE_GETSTARTIME;
 		}
 		gameView.SetOperationBtnActive ("Addition");
 	}
@@ -163,8 +164,9 @@ public class GameSystem : MonoBehaviour {
 			timeLeft = GlobalData.ENDLESS_MODE_START_TIME;
 		} 
 		else {
-			int _tagetCount = GetTargetCount (Game.NOWLEVEL + 1);
-			timeLeft = _tagetCount * GlobalData.TARGET_TIME;
+//			int _tagetCount = GetTargetCount (Game.NOWLEVEL + 1);
+//			timeLeft = _tagetCount * GlobalData.TARGET_TIME;
+			timeLeft = GlobalData.MAIN_MODE_TIMELEFT;
 		}
 		gameView.SetActionValue (timeLeft);
 	}
