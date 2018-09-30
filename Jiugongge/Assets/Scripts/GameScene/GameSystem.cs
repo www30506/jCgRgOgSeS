@@ -272,8 +272,9 @@ public class GameSystem : MonoBehaviour {
 	}
 
 	private void InitPlayerStartValue (){
-		if (Game.NOWLEVEL % 5 == 4) {
-			int _additionValue = UnityEngine.Random.Range (0, 10);
+		if (Game.NOWLEVEL > 4 || Game.endlessMode) {
+			string[] _StartValueRange = Regex.Split (GlobalData.PLAYER_START_VALUE, "~");
+			int _additionValue = UnityEngine.Random.Range (int.Parse(_StartValueRange[0]), int.Parse(_StartValueRange[1])+1);
 			playerCard.AdditionValue (_additionValue);
 		}
 	}
@@ -633,7 +634,6 @@ public class GameSystem : MonoBehaviour {
 					timeLeft += GlobalData.ENDLESS_MODE_COMPLETE_ADD_TIME;
 					gameView.SetActionValue (timeLeft);
 					endlessMode_CompleteCount++;
-					Debug.LogError (endlessMode_CompleteCount);
 				}
 			}
 		}

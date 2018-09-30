@@ -16,10 +16,15 @@ public class GlobalData {
 	/*******************************************************/
 
 
-	/************		一班模式		****************/
+	/************		一般模式		****************/
 	public static float MAIN_MODE_TIMELEFT = 60; //一般關卡開始的起始的時間
 	public static float MAIN_MODE_GETSTARTIME = 30; //一般關卡獲得星星的時間
 	public static float MAIN_MODE_TIMELEFT_Random = 60; //一般關卡 - 隨機關卡 開始的起始的時間
 	public static float MAIN_MODE_GETSTARTIME_Random = 30; //一般關卡 - 隨機關卡 獲得星星的時間
+	/*******************************************************/
+
+
+	/************		一般模式		****************/
+	public static string PLAYER_START_VALUE = "1~10"; //所有模式的玩家起始數值(除了1~4關)
 	/*******************************************************/
 }
