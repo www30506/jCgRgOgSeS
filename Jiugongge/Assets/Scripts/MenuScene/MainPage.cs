@@ -37,14 +37,17 @@ public class MainPage : Page_Base {
 	}
 
 	public void ToSettingPage(){
+		print ("設定頁面");
 		PageManerger.ChangePage (PageType.SettingPage);
 	}
 
-	public void ToLevelPage(){
-		PageManerger.ChangePage (PageType.LevelPage);
+	public void ToPokerMode(){
+		print ("撲克牌模式");
+		Game.endlessMode = false;
+		Game.LoadScene ("GameScene_Poker");
 	}
 
-	public void ToEndlessMode(){
+	public void ToOperationMode(){
 		print ("無盡模式");
 		Game.endlessMode = true;
 		Game.LoadScene ("GameScene");
