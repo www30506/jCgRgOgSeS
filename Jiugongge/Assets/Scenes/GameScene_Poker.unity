@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1736,35 +1736,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 805532513}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96d9d7d5b2e75694d81749b9dcb8d225, type: 3}
+  m_Script: {fileID: 11500000, guid: b7aa6626148f88e4783191d7d755c265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardMoveState: 0
-  completeTargets: 
-  IscompleteTargets: 000000
-  operationState: 0
-  initCardsID:
-  - 12
-  - 12
-  - 12
-  - 12
-  - 13
-  - 12
-  - 12
-  - 12
-  - 12
-  drawCardsList: []
-  timeLeft: 0
-  useTime: 0
-  changeOperationCount: 9
-  drawCardIndex: 0
-  maxCards: 9
-  cards: []
-  cardListTransform: {fileID: 1067408571}
-  cardPoolTransform: {fileID: 2026481442}
-  gameView: {fileID: 805532516}
-  playerCard: {fileID: 0}
-  endlessMode_CompleteCount: 0
+  testCards:
+  - 
+  - 
+  - 
+  - 
+  - 
+  hasPokerCards: []
+  suit_Colors: 00000000000000000000000000000000
+  suit_Numbers: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  suitPokerCards: []
 --- !u!114 &805532518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1816,6 +1800,7 @@ MonoBehaviour:
   timeLeft: 0
   useTime: 0
   changeOperationCount: 0
+  judgingCardType: {fileID: 805532517}
   drawCardIndex: 0
   maxCards: 9
   cards: []

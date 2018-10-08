@@ -21,6 +21,7 @@ public class GameSystem_Poker : MonoBehaviour {
 	[SerializeField]private int changeOperationCount;
 	[Header("====")]
 
+	[SerializeField]private JudgingCardType judgingCardType;
 	[SerializeField]private int drawCardIndex;
 
 	[SerializeField]private int maxCards = 9;
