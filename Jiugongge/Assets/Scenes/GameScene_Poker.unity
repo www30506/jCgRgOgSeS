@@ -1804,9 +1804,9 @@ MonoBehaviour:
   drawCardIndex: 0
   maxCards: 9
   cards: []
-  cardListTransform: {fileID: 0}
-  cardPoolTransform: {fileID: 0}
-  gameView: {fileID: 0}
+  cardListTransform: {fileID: 1067408571}
+  cardPoolTransform: {fileID: 2026481442}
+  gameView: {fileID: 805532518}
   playerCard: {fileID: 0}
   endlessMode_CompleteCount: 0
 --- !u!1 &812218382

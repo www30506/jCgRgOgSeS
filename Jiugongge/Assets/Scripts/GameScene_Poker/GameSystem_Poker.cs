@@ -14,7 +14,6 @@ public class GameSystem_Poker : MonoBehaviour {
 	[SerializeField]private int[] completeTargets;
 	[SerializeField]private bool[] IscompleteTargets;
 	[SerializeField]private OperationType operationState= OperationType.Addition;
-	[SerializeField]private string[] initCardsID;
 	[SerializeField]private Queue<int> drawCardsQueue;
 	[SerializeField]private float timeLeft;
 	[SerializeField]private float useTime;
@@ -40,8 +39,8 @@ public class GameSystem_Poker : MonoBehaviour {
 
 	void Start () {
 		InitDrawCardList ();
-//		CreateCardPool ();
-//		CreateCards ();
+		CreateCardPool ();
+		CreateCards ();
 //		CreateCompleteTarget ();
 //		InitActionValue ();
 //		gameView.HideChangeOperationCountText ();
@@ -217,7 +216,7 @@ public class GameSystem_Poker : MonoBehaviour {
 
 	private void CreateCards(){
 		for(int i=0; i< 9; i++){
-			StartCoroutine(CreateCard(initCardsID[i], i));
+			StartCoroutine(CreateCard(drawCardsQueue.Dequeue().ToString(), i));
 		}
 	}
 
