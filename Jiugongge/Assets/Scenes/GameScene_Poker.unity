@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -151,13 +151,18 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4726484478706942, guid: a7d0342582050754d9288a6e25955a90, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0.6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1051111211617714, guid: a7d0342582050754d9288a6e25955a90, type: 2}
       propertyPath: m_Name
       value: CardPoker (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4508072363074744, guid: a7d0342582050754d9288a6e25955a90, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 61328379287699288, guid: a7d0342582050754d9288a6e25955a90, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: a7d0342582050754d9288a6e25955a90, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &255974216 stripped
@@ -663,7 +668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardMoveState: 0
-  drawCards_ID_List: 
+  drawCards_ID_List: []
   score: 0
   judgingCardType: {fileID: 805532517}
   maxCards: 9
@@ -720,13 +725,18 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4726484478706942, guid: a7d0342582050754d9288a6e25955a90, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0.6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1051111211617714, guid: a7d0342582050754d9288a6e25955a90, type: 2}
       propertyPath: m_Name
       value: CardPoker (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4508072363074744, guid: a7d0342582050754d9288a6e25955a90, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 61328379287699288, guid: a7d0342582050754d9288a6e25955a90, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: a7d0342582050754d9288a6e25955a90, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &820258645 stripped
@@ -781,13 +791,18 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4726484478706942, guid: a7d0342582050754d9288a6e25955a90, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0.6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1051111211617714, guid: a7d0342582050754d9288a6e25955a90, type: 2}
       propertyPath: m_Name
       value: CardPoker (3)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4508072363074744, guid: a7d0342582050754d9288a6e25955a90, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 61328379287699288, guid: a7d0342582050754d9288a6e25955a90, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: a7d0342582050754d9288a6e25955a90, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &875456276 stripped
@@ -842,13 +857,18 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4726484478706942, guid: a7d0342582050754d9288a6e25955a90, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0.6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1051111211617714, guid: a7d0342582050754d9288a6e25955a90, type: 2}
       propertyPath: m_Name
       value: CardPoker (4)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4508072363074744, guid: a7d0342582050754d9288a6e25955a90, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 61328379287699288, guid: a7d0342582050754d9288a6e25955a90, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: a7d0342582050754d9288a6e25955a90, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &978160734 stripped
@@ -1526,9 +1546,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4726484478706942, guid: a7d0342582050754d9288a6e25955a90, type: 2}
       propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4508072363074744, guid: a7d0342582050754d9288a6e25955a90, type: 2}
+      propertyPath: m_LocalScale.x
       value: 0.6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4669888642422174, guid: a7d0342582050754d9288a6e25955a90, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 102406017043116744, guid: a7d0342582050754d9288a6e25955a90,
+        type: 2}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 61328379287699288, guid: a7d0342582050754d9288a6e25955a90, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: a7d0342582050754d9288a6e25955a90, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &1713207922 stripped
@@ -1891,7 +1925,6 @@ GameObject:
   - component: {fileID: 2084535396}
   - component: {fileID: 2084535398}
   - component: {fileID: 2084535397}
-  - component: {fileID: 2084535399}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -1956,57 +1989,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2084535395}
---- !u!114 &2084535399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2084535395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49c1cac139112f34e890afdfc1548818, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loopType: 2
-  Curve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0.054327574
-      outSlope: 0.054327574
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 0.49
-      value: 0
-      inSlope: 0.06395289
-      outSlope: 0.99927187
-      tangentMode: 1
-    - serializedVersion: 2
-      time: 0.5
-      value: 1
-      inSlope: 2.15739
-      outSlope: -0.020438988
-      tangentMode: 1
-    - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 0.016945321
-      outSlope: 0.016945321
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  Duration: 0.5
-  ignoreTimeScale: 0
-  OnFinishedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  Form: {r: 1, g: 1, b: 1, a: 1}
-  To: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &2137803532
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ public class GameSystem_Poker : MonoBehaviour {
 	[SerializeField]private CardMoveType cardMoveState = CardMoveType.Left;
 
 	[Header("Data")]
-	[SerializeField]private List<int> drawCards_ID_List;
+	[SerializeField]private List<string> drawCards_ID_List;
 	[SerializeField]private int score;
 	[Header("====")]
 
@@ -30,18 +30,26 @@ public class GameSystem_Poker : MonoBehaviour {
 
 	void Start () {
 		InitDrawCardList ();
+		InitButtomCards ();
 		CreateCardPool ();
 		CreateCards ();
 		gameView.SetScore (0);
 		ChangeNextCardTip ();
 	}
 
+
+	private void InitButtomCards(){
+		for (int i = 0; i < buttomCards.Length; i++) {
+			buttomCards [i].ResetCard ("12");
+		}
+	}
+
 	private void ChangeNextCardTip(){
-		nextCard.ResetCard (drawCards_ID_List [0].ToString ());	
+		nextCard.ResetCard (drawCards_ID_List [0]);	
 	}
 
 	private void InitDrawCardList(){
-		drawCards_ID_List = new List<int>();
+		drawCards_ID_List = new List<string>();
 		List<int> _tempList = new List<int>();
 		for (int i = 0; i < 52; i++) {
 			_tempList.Add (i + 17);
@@ -49,7 +57,7 @@ public class GameSystem_Poker : MonoBehaviour {
 
 		while(_tempList.Count >0){
 			int _random = UnityEngine.Random.Range (0, _tempList.Count);
-			drawCards_ID_List.Add (_tempList [_random]);
+			drawCards_ID_List.Add (_tempList [_random].ToString());
 			_tempList.RemoveAt (_random);
 		}
 	}
@@ -102,7 +110,7 @@ public class GameSystem_Poker : MonoBehaviour {
 	private void CreateCards(){
 		for(int i=0; i< 9; i++){
 			if (i != 4) {
-				StartCoroutine (CreateCard (drawCards_ID_List[0].ToString (), i));
+				StartCoroutine (CreateCard (drawCards_ID_List[0], i));
 			} 
 			else {
 				StartCoroutine (CreateCard (13.ToString(), i));
@@ -111,16 +119,6 @@ public class GameSystem_Poker : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Input.GetKeyUp (KeyCode.A)) {
-			for (int i = 0; i < drawCards_ID_List.Count; i++) {
-				int _aa =drawCards_ID_List[0];
-				print (_aa);
-			}
-		}
-
-		if (Input.GetKeyUp (KeyCode.S)) {
-			print (drawCards_ID_List.Count);
-		}
 	}
 
 	public void BackToMenu(){
@@ -144,11 +142,13 @@ public class GameSystem_Poker : MonoBehaviour {
 
 			DoCardAction (_card);
 
+			CopyCardToButtom (_card.GetCardID());
 			yield return StartCoroutine(IE_DestoryCard(p_touchCardPositionIndex));
 
 			yield return StartCoroutine (IE_MoveCard (p_touchCardPositionIndex));
 
-			yield return StartCoroutine (CreateCard (drawCards_ID_List[0].ToString(), GetCreateCardPositionIndex ()));
+			yield return StartCoroutine (CreateCard (drawCards_ID_List[0], GetCreateCardPositionIndex ()));
+
 			ChangeNextCardTip ();
 		}
 
@@ -156,6 +156,33 @@ public class GameSystem_Poker : MonoBehaviour {
 		yield return null;
 	}
 		
+	private void CopyCardToButtom(string p_cardID){
+		int _copyIndex = -1;
+
+		//尋找位子
+		for (int i = 0; i < buttomCards.Length; i++) {
+			if (buttomCards [i].GetCardID () == "12") {
+				_copyIndex = i;
+//				print ("複製卡片ID : " + p_cardID);
+				break;
+			}
+		}
+
+		//如果沒位子就剃除最左邊
+		if (_copyIndex == -1) {
+			drawCards_ID_List.Add (buttomCards [0].GetCardID ());
+
+			for (int i = 0; i < buttomCards.Length - 1; i++) {
+				buttomCards [i].ResetCard (buttomCards [i + 1].GetCardID ());
+			}
+
+			buttomCards [buttomCards.Length - 1].ResetCard (p_cardID);
+		} 
+		else {
+			buttomCards [_copyIndex].ResetCard (p_cardID);
+		}
+	}
+
 	private void SaveData(){
 		PlayerData _playerData = PlayerData.Create ();
 
