@@ -10,7 +10,7 @@ public class GameSystem_Poker : MonoBehaviour {
 	[SerializeField]private CardMoveType cardMoveState = CardMoveType.Left;
 
 	[Header("Data")]
-	[SerializeField]private Queue<int> drawCardsQueue;
+	[SerializeField]private List<int> drawCards_ID_List;
 	[SerializeField]private int score;
 	[Header("====")]
 
@@ -26,6 +26,7 @@ public class GameSystem_Poker : MonoBehaviour {
 	private SystemStatue systemStatue = SystemStatue.Idle;
 	[SerializeField]private CardPoker playerCard;
 	private int prePlayerPositionIndex;
+	private int nextCardId = -1;
 
 	void Start () {
 		InitDrawCardList ();
@@ -35,7 +36,7 @@ public class GameSystem_Poker : MonoBehaviour {
 	}
 
 	private void InitDrawCardList(){
-		drawCardsQueue = new Queue<int>();
+		drawCards_ID_List = new List<int>();
 		List<int> _tempList = new List<int>();
 		for (int i = 0; i < 52; i++) {
 			_tempList.Add (i + 17);
@@ -43,7 +44,7 @@ public class GameSystem_Poker : MonoBehaviour {
 
 		while(_tempList.Count >0){
 			int _random = UnityEngine.Random.Range (0, _tempList.Count);
-			drawCardsQueue.Enqueue (_tempList [_random]);
+			drawCards_ID_List.Add (_tempList [_random]);
 			_tempList.RemoveAt (_random);
 		}
 	}
@@ -82,18 +83,21 @@ public class GameSystem_Poker : MonoBehaviour {
 		CardPoker _card = cardsPool.Dequeue();
 		cards.Add (_card);
 		_card.Init(p_CardID, p_positionIndex, OnTouchCardEvent);
+		if (_card.GetCardType () == "Player") {
+			playerCard = _card;
+		} 
+		else {
+			drawCards_ID_List.RemoveAt (0);
+		}
+
 		yield return StartCoroutine(_card.CreateEff());
 		_card.transform.SetParent(cardListTransform, false);
-
-		if (_card.GetCardType() == "Player") {
-			playerCard = _card;
-		}
 	}
 
 	private void CreateCards(){
 		for(int i=0; i< 9; i++){
 			if (i != 4) {
-				StartCoroutine (CreateCard (drawCardsQueue.Dequeue ().ToString (), i));
+				StartCoroutine (CreateCard (drawCards_ID_List[0].ToString (), i));
 			} 
 			else {
 				StartCoroutine (CreateCard (13.ToString(), i));
@@ -103,11 +107,14 @@ public class GameSystem_Poker : MonoBehaviour {
 
 	void Update () {
 		if (Input.GetKeyUp (KeyCode.A)) {
-			for (int i = 0; i < drawCardsQueue.Count; i++) {
-				int _aa =drawCardsQueue.Dequeue();
-				drawCardsQueue.Enqueue (_aa);
+			for (int i = 0; i < drawCards_ID_List.Count; i++) {
+				int _aa =drawCards_ID_List[0];
 				print (_aa);
 			}
+		}
+
+		if (Input.GetKeyUp (KeyCode.S)) {
+			print (drawCards_ID_List.Count);
 		}
 	}
 
@@ -136,9 +143,7 @@ public class GameSystem_Poker : MonoBehaviour {
 
 			yield return StartCoroutine (IE_MoveCard (p_touchCardPositionIndex));
 
-			string[] _skillCards = new string[]{"14", "15", "16"};
-			drawCardIndex = UnityEngine.Random.Range (0, _skillCards.Length);
-			yield return StartCoroutine (CreateCard (_skillCards [drawCardIndex], GetCreateCardPositionIndex ()));
+			yield return StartCoroutine (CreateCard (drawCards_ID_List[0].ToString(), GetCreateCardPositionIndex ()));
 		}
 
 		systemStatue = SystemStatue.Idle;
