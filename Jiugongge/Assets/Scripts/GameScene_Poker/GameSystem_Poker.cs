@@ -15,7 +15,6 @@ public class GameSystem_Poker : MonoBehaviour {
 	[SerializeField]private bool[] IscompleteTargets;
 	[SerializeField]private OperationType operationState= OperationType.Addition;
 	[SerializeField]private Queue<int> drawCardsQueue;
-	[SerializeField]private float timeLeft;
 	[SerializeField]private float useTime;
 	[SerializeField]private int changeOperationCount;
 	[Header("====")]
@@ -24,13 +23,13 @@ public class GameSystem_Poker : MonoBehaviour {
 	[SerializeField]private int drawCardIndex;
 
 	[SerializeField]private int maxCards = 9;
-	[SerializeField]private List<Card> cards;
-	private Queue<Card> cardsPool;
+	[SerializeField]private List<CardPoker> cards;
+	private Queue<CardPoker> cardsPool;
 	[SerializeField]private Transform cardListTransform;
 	[SerializeField]private Transform cardPoolTransform;
 	[SerializeField]private GameView_Poker gameView;
 	private SystemStatue systemStatue = SystemStatue.Idle;
-	[SerializeField]private Card playerCard;
+	[SerializeField]private CardPoker playerCard;
 	private int prePlayerPositionIndex;
 	private int endlessModeDrawCardCount = 0;
 	private float getStarTime = 0;
@@ -41,8 +40,6 @@ public class GameSystem_Poker : MonoBehaviour {
 		InitDrawCardList ();
 		CreateCardPool ();
 		CreateCards ();
-//		CreateCompleteTarget ();
-//		InitActionValue ();
 //		gameView.HideChangeOperationCountText ();
 //		getStarTime = GlobalData.MAIN_MODE_GETSTARTIME;
 //		gameView.SetOperationBtnActive ("Addition");
@@ -109,89 +106,20 @@ public class GameSystem_Poker : MonoBehaviour {
 		return _targetRange;
 	}
 
-	private void InitActionValue(){
-		if (Game.endlessMode) {
-			timeLeft = GlobalData.ENDLESS_MODE_START_TIME;
-		} 
-		else {
-//			int _tagetCount = GetTargetCount (Game.NOWLEVEL + 1);
-//			timeLeft = _tagetCount * GlobalData.TARGET_TIME;
-			if ((Game.NOWLEVEL + 1) % 5 == 0) {
-				timeLeft = GlobalData.MAIN_MODE_TIMELEFT_Random;
-			} 
-			else {
-				timeLeft = GlobalData.MAIN_MODE_TIMELEFT;
-			}
-		}
-		gameView.SetActionValue (timeLeft);
-	}
 
-	private void SetActionValue(int p_value){
-		timeLeft += p_value;
-		gameView.SetActionValue (timeLeft);
-	}
-
-	private void CreateCompleteTarget(){
-		int _tagetCount = GetTargetCount (Game.NOWLEVEL +1);
-		string _targetRange = GetTargetRange(Game.NOWLEVEL+1);
-		List<int> _rangeGroup = new List<int> ();
-		print ("_targetRange : " + _targetRange);
-		if (_targetRange.Contains ("~")) {
-			string[] _aaa = Regex.Split (_targetRange, "~");
-			int _startNumber = int.Parse(_aaa[0]);
-			int _endNumber = int.Parse (_aaa [1]);
-
-			int _tempNumber = _startNumber;
-			while(_tempNumber <= _endNumber){
-				_rangeGroup.Add (_tempNumber++);
-			}
-		}
-		else{
-			string[] _targetGroup;
-			_targetGroup = Regex.Split (_targetRange, ",");
-
-			for (int i = 0; i < _targetGroup.Length; i++) {
-				_rangeGroup.Add (int.Parse(_targetGroup[i]));
-			}
-		}
-
-
-		completeTargets = new int[_tagetCount];
-		IscompleteTargets = new bool[_tagetCount];
-		for (int i = 0; i < completeTargets.Length; i++) {
-
-			int _index = UnityEngine.Random.Range (0, _rangeGroup.Count);
-			completeTargets [i] = _rangeGroup[_index];
-			_rangeGroup.RemoveAt (_index);
-
-		}
-
-		//重小排到大
-		for (int i = 0; i < completeTargets.Length-1; i++) {
-			for (int j = i + 1; j < completeTargets.Length; j++) {
-				if (completeTargets [i] > completeTargets [j]) {
-					int _temp = completeTargets [i];
-					completeTargets [i] = completeTargets [j];
-					completeTargets [j] = _temp;
-				}
-			}
-		}
-
-		gameView.InitCompleteTarget (completeTargets);
-	}
 
 	private void CreateCardPool(){;
-		cardsPool = new Queue<Card>();
+		cardsPool = new Queue<CardPoker>();
 
 		for(int i=0; i< maxCards; i++){
-			GameObject _obj = Instantiate(Resources.Load("Prefabs/Game/Card"))  as GameObject;
-			Card _card = _obj.GetComponent<Card>();
+			GameObject _obj = Instantiate(Resources.Load("Prefabs/Game/CardPoker"))  as GameObject;
+			CardPoker _card = _obj.GetComponent<CardPoker>();
 			cardsPool.Enqueue(_card);
 			_obj.transform.SetParent(cardPoolTransform, false);
 		}
 	}
 
-	private Card GetCard(int p_positionIndex){
+	private CardPoker GetCard(int p_positionIndex){
 		for(int i=0; i< maxCards; i++){
 			if(cards[i].GetPositionIndex() == p_positionIndex){
 				return cards[i];
@@ -202,7 +130,7 @@ public class GameSystem_Poker : MonoBehaviour {
 	}
 
 	IEnumerator CreateCard(string p_CardID, int p_positionIndex){
-		Card _card = cardsPool.Dequeue();
+		CardPoker _card = cardsPool.Dequeue();
 		cards.Add (_card);
 		_card.Init(p_CardID, p_positionIndex, OnTouchCardEvent);
 		yield return StartCoroutine(_card.CreateEff());
@@ -210,21 +138,12 @@ public class GameSystem_Poker : MonoBehaviour {
 
 		if (_card.GetCardType() == "Player") {
 			playerCard = _card;
-			InitPlayerStartValue ();
 		}
 	}
 
 	private void CreateCards(){
 		for(int i=0; i< 9; i++){
 			StartCoroutine(CreateCard(drawCardsQueue.Dequeue().ToString(), i));
-		}
-	}
-
-	private void InitPlayerStartValue (){
-		if (Game.NOWLEVEL > 4 || Game.endlessMode) {
-			string[] _StartValueRange = Regex.Split (GlobalData.PLAYER_START_VALUE, "~");
-			int _additionValue = UnityEngine.Random.Range (int.Parse(_StartValueRange[0]), int.Parse(_StartValueRange[1])+1);
-			playerCard.AdditionValue (_additionValue);
 		}
 	}
 
@@ -236,31 +155,6 @@ public class GameSystem_Poker : MonoBehaviour {
 				print (_aa);
 			}
 		}
-//		timeLeft -= Time.deltaTime;
-//		useTime += Time.deltaTime;
-//
-//		gameView.SetActionValue (timeLeft);
-//		if (timeLeft < 10) {
-//			gameView.ActionValueFlash (true);
-//		} 
-//		else {
-//			gameView.ActionValueFlash (false);
-//		}
-//
-//
-//		if (timeLeft < 0 && systemStatue != SystemStatue.Loss) {
-//			print ("【遊戲結束】 時間結束");
-//			systemStatue = SystemStatue.Loss;
-//
-//			if (Game.endlessMode) {
-//				endlessMode_GetScore = endlessMode_CompleteCount;
-//				gameView.ShowendlessModeGameOverUI(endlessMode_GetScore , useTime);
-//				SaveData ();
-//			} 
-//			else {
-//				gameView.ShowLossUI ();
-//			}
-//		}
 	}
 
 	public void BackToMenu(){
@@ -280,7 +174,7 @@ public class GameSystem_Poker : MonoBehaviour {
 		systemStatue = SystemStatue.Working;
 
 		if (IsNearby (playerCard.GetPositionIndex (), p_touchCardPositionIndex)) {
-			Card _card = GetCard (p_touchCardPositionIndex);
+			CardPoker _card = GetCard (p_touchCardPositionIndex);
 
 			DoCardAction (_card);
 
@@ -300,14 +194,12 @@ public class GameSystem_Poker : MonoBehaviour {
 				yield return StartCoroutine (CreateCard (_skillCards [drawCardIndex], GetCreateCardPositionIndex ()));
 			}
 
-			CheckCompleteTarget ();
-
 			if (Game.endlessMode) {
 				if (IsAllTargetsComplete ()) {
 					print ("創造新的目標");
 					changeOperationCount += GlobalData.ENDLESS_MODE_COMPLETE_TARGET_ADD_changeOperationCount;
 					gameView.SetChangeOperationCountText (changeOperationCount);
-					CheckCompleteTarget ();
+
 					CreateCompleteTarget_EndlessMode ();
 					gameView.ResetCompleteTargetEff ();
 				}
@@ -456,39 +348,22 @@ public class GameSystem_Poker : MonoBehaviour {
 		}
 	}
 
-	private void DoCardAction(Card p_card){
+	private void DoCardAction(CardPoker p_card){
 		switch (p_card.GetCardType()) {
+		case "Poker":
+			//將排放入底下
+			//做判斷
+			//
+			break;
 		case "Action":
-			SetActionValue(p_card.GetCardValue ());
 			break;
 		case "Base":
-			if (operationState == OperationType.Addition) {
-				playerCard.AdditionValue (p_card.GetCardValue ());
-			} 
-			else if (operationState == OperationType.Subtraction) {
-				playerCard.SubtractionValue (p_card.GetCardValue ());
-			}
-			else if (operationState == OperationType.Multiplication) {
-				playerCard.MultiplicationValue (p_card.GetCardValue ());
-			}
-			else if (operationState == OperationType.Division) {
-				if (playerCard.CanDivision (p_card.GetCardValue ())) {
-					playerCard.DivisionValue (p_card.GetCardValue ());
-				}
-				else {
-					print ("不能執行");
-				}
-			}
 			break;
 		case "Question":
-			StartCoroutine (IE_Question ());
 			break;
 		case "Marvel":
-			StartCoroutine(IE_Marvel(p_card));
 			break;
 		case "ChangeOperation":
-			changeOperationCount += p_card.GetCardValue ();
-			gameView.SetChangeOperationCountText (changeOperationCount);
 			break;
 		case "Null":
 			break;
@@ -508,7 +383,7 @@ public class GameSystem_Poker : MonoBehaviour {
 		systemStatue = SystemStatue.Idle;
 	}
 
-	private IEnumerator IE_Marvel(Card p_card){
+	private IEnumerator IE_Marvel(CardPoker p_card){
 		List<string> _cardsID = new List<string> ();
 		//先取所有卡牌的位置存放在容器內
 		for (int i = 0; i < cards.Count; i++) {
@@ -561,20 +436,6 @@ public class GameSystem_Poker : MonoBehaviour {
 		}
 	}
 
-	private void CheckCompleteTarget(){
-		for (int i = 0; i < IscompleteTargets.Length; i++) {
-			if (playerCard.GetCardValue () == completeTargets [i] && IscompleteTargets [i] == false) {
-				IscompleteTargets [i] = true;
-
-				gameView.CompleteTargetEff (i);
-				if (Game.endlessMode) {
-					timeLeft += GlobalData.ENDLESS_MODE_COMPLETE_ADD_TIME;
-					gameView.SetActionValue (timeLeft);
-					endlessMode_CompleteCount++;
-				}
-			}
-		}
-	}
 
 	private bool IsAllTargetsComplete(){
 		for (int i = 0; i < IscompleteTargets.Length; i++) {

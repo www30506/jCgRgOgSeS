@@ -50,19 +50,6 @@ public class GameView_Poker : MonoBehaviour {
 		actionValueText.text = string.Format("{0:F2}", p_value);
 	}
 
-	public void ActionValueFlash(bool p_active){
-		if (p_active) {
-			if (actionValueEffect.enabled == false)
-				actionValueEffect.enabled = true;
-		} 
-		else {
-			if (actionValueEffect.enabled == true) {
-				actionValueEffect.enabled = false;
-				actionValueText.color = Color.black;
-			}
-		}
-	}
-
 	public void ShowWinUI(float p_useTime, bool p_isGetStar){
 		winUI.SetActive (true);
 

@@ -6,7 +6,7 @@ public class CardPoker: MonoBehaviour {
 	[SerializeField]private SpriteRenderer m_SpriteRenderer;
 	[SerializeField]private int positionIndex;
 	[SerializeField]private string cardID;
-	[SerializeField]private int m_value;
+	[SerializeField]private string m_value;
 	[SerializeField]private string m_type;
 	[SerializeField]private string m_name;
 	[SerializeField]private TextMesh m_valueTextMesh;
@@ -45,7 +45,7 @@ public class CardPoker: MonoBehaviour {
 
 	public void Init(string p_cardID,int p_positionIndex, TouchCardHandler p_onTouchCardEvent){
 		cardID = p_cardID;
-		m_value = int.Parse(PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString());
+		m_value = PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString();
 		m_type = PD.DATA ["CardTable"] [p_cardID] ["Type"].ToString();
 		m_name = PD.DATA ["CardTable"] [p_cardID] ["Name"].ToString();
 
@@ -62,7 +62,7 @@ public class CardPoker: MonoBehaviour {
 
 	public void  ResetCard(string p_cardID){
 		cardID = p_cardID;
-		m_value = int.Parse(PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString());
+		m_value = PD.DATA ["CardTable"] [p_cardID] ["Value"].ToString();
 		m_type = PD.DATA ["CardTable"] [p_cardID] ["Type"].ToString();
 		m_name = PD.DATA ["CardTable"] [p_cardID] ["Name"].ToString();
 
@@ -117,7 +117,7 @@ public class CardPoker: MonoBehaviour {
 			m_valueTextMesh.text = "!";
 		}
 		else {
-			m_valueTextMesh.text = m_value.ToString ();
+			m_valueTextMesh.text = m_value;
 		}
 	}
 
@@ -235,37 +235,7 @@ public class CardPoker: MonoBehaviour {
 		yield return null;
 	}
 
-	public int GetCardValue(){
+	public string GetCardValue(){
 		return m_value;
-	}
-
-	public void AdditionValue(int p_value){
-		m_value += p_value;
-		m_valueTextMesh.text = m_value.ToString ();
-	}
-
-	public void SubtractionValue(int p_value){
-		m_value -= p_value;
-		m_valueTextMesh.text = m_value.ToString ();
-	}
-
-	public void MultiplicationValue(int p_value){
-		m_value *= p_value;
-		m_valueTextMesh.text = m_value.ToString ();
-	}
-
-	public void DivisionValue(int p_value){
-		m_value /= p_value;
-		m_valueTextMesh.text = m_value.ToString ();
-	}
-
-	public bool CanDivision(int p_value){
-		return true;
-//		bool _CanDivision = false;
-//		if (m_value % p_value == 0) {
-//			_CanDivision = true;
-//		}
-//
-//		return _CanDivision;
 	}
 }
