@@ -272,8 +272,8 @@ public class GameSystem_Poker : MonoBehaviour {
 	private bool IsNearby(int p_playerPositionIndex, int p_touchCardPositionIndex){
 		bool _isNearby = false;
 
-		if (p_touchCardPositionIndex == p_playerPositionIndex - 1 || //左邊
-			p_touchCardPositionIndex == p_playerPositionIndex + 1 || //右邊
+		if ((p_touchCardPositionIndex == p_playerPositionIndex - 1 && p_playerPositionIndex%3 !=  0)|| //左邊
+			(p_touchCardPositionIndex == p_playerPositionIndex + 1 && p_playerPositionIndex%3 != 2)|| //右邊
 			p_touchCardPositionIndex == p_playerPositionIndex - 3 || //上面
 			p_touchCardPositionIndex == p_playerPositionIndex + 3 //下面
 		) {
