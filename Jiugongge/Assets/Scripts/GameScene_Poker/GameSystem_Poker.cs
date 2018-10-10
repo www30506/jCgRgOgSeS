@@ -15,7 +15,6 @@ public class GameSystem_Poker : MonoBehaviour {
 	[Header("====")]
 
 	[SerializeField]private JudgingCardType judgingCardType;
-	[SerializeField]private int drawCardIndex;
 
 	[SerializeField]private int maxCards = 9;
 	[SerializeField]private List<CardPoker> cards;
@@ -25,14 +24,20 @@ public class GameSystem_Poker : MonoBehaviour {
 	[SerializeField]private GameView_Poker gameView;
 	private SystemStatue systemStatue = SystemStatue.Idle;
 	[SerializeField]private CardPoker playerCard;
+	[SerializeField]private CardPoker[] buttomCards;
+	[SerializeField]private CardPoker nextCard;
 	private int prePlayerPositionIndex;
-	private int nextCardId = -1;
 
 	void Start () {
 		InitDrawCardList ();
 		CreateCardPool ();
 		CreateCards ();
 		gameView.SetScore (0);
+		ChangeNextCardTip ();
+	}
+
+	private void ChangeNextCardTip(){
+		nextCard.ResetCard (drawCards_ID_List [0].ToString ());	
 	}
 
 	private void InitDrawCardList(){
@@ -144,6 +149,7 @@ public class GameSystem_Poker : MonoBehaviour {
 			yield return StartCoroutine (IE_MoveCard (p_touchCardPositionIndex));
 
 			yield return StartCoroutine (CreateCard (drawCards_ID_List[0].ToString(), GetCreateCardPositionIndex ()));
+			ChangeNextCardTip ();
 		}
 
 		systemStatue = SystemStatue.Idle;
