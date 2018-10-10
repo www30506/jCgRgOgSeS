@@ -5,18 +5,13 @@ using System;
 using System.Text.RegularExpressions;
 
 public class GameSystem_Poker : MonoBehaviour {
-	private enum OperationType{Addition, Subtraction, Multiplication, Division};
 	private enum SystemStatue{Idle, Working, Win , Loss};
 	private enum CardMoveType{Left, Right, Up, Down};
 	[SerializeField]private CardMoveType cardMoveState = CardMoveType.Left;
 
 	[Header("Data")]
-	[SerializeField]private int[] completeTargets;
-	[SerializeField]private bool[] IscompleteTargets;
-	[SerializeField]private OperationType operationState= OperationType.Addition;
 	[SerializeField]private Queue<int> drawCardsQueue;
-	[SerializeField]private float useTime;
-	[SerializeField]private int changeOperationCount;
+	[SerializeField]private int score;
 	[Header("====")]
 
 	[SerializeField]private JudgingCardType judgingCardType;
@@ -31,18 +26,12 @@ public class GameSystem_Poker : MonoBehaviour {
 	private SystemStatue systemStatue = SystemStatue.Idle;
 	[SerializeField]private CardPoker playerCard;
 	private int prePlayerPositionIndex;
-	private int endlessModeDrawCardCount = 0;
-	private float getStarTime = 0;
-	private int endlessMode_GetScore = 0;
-	public int endlessMode_CompleteCount = 0;
 
 	void Start () {
 		InitDrawCardList ();
 		CreateCardPool ();
 		CreateCards ();
-//		gameView.HideChangeOperationCountText ();
-//		getStarTime = GlobalData.MAIN_MODE_GETSTARTIME;
-//		gameView.SetOperationBtnActive ("Addition");
+		gameView.SetScore (0);
 	}
 
 	private void InitDrawCardList(){
@@ -67,46 +56,6 @@ public class GameSystem_Poker : MonoBehaviour {
 
 		return _targetCount;
 	}
-
-	private string GetTargetRange(int p_level){
-		int _targetCount = GetTargetCount(p_level);
-		int _startNumber = 0;
-		string _targetRange = "";
-
-		if (p_level % 5 == 0) {
-			_startNumber = 1 + (((p_level-1) / 5)*10);
-		}
-		else if (p_level % 5 == 1) {
-			_startNumber = 1 + ((p_level / 5)*10);
-		}
-		else if (p_level % 5 == 2) {
-			_startNumber = 2 + ((p_level / 5)*10);
-		}
-		else if (p_level % 5 == 3) {
-			_startNumber = 4 + ((p_level / 5)*10);
-		}
-		else if (p_level % 5 == 4) {
-			_startNumber = 7 + ((p_level / 5)*10);
-		}
-
-		if(p_level % 5 == 0){
-			_targetRange = "1~" + ((p_level / 5) * 10);
-		}
-		else{
-			for (int i = 0; i < _targetCount; i++) {
-				if (string.IsNullOrEmpty (_targetRange)) {
-					_targetRange += "" + (i + _startNumber);
-				} 
-				else {
-					_targetRange += "," + (i + _startNumber);
-				}
-			}
-		}
-
-		return _targetRange;
-	}
-
-
 
 	private void CreateCardPool(){;
 		cardsPool = new Queue<CardPoker>();
@@ -143,7 +92,12 @@ public class GameSystem_Poker : MonoBehaviour {
 
 	private void CreateCards(){
 		for(int i=0; i< 9; i++){
-			StartCoroutine(CreateCard(drawCardsQueue.Dequeue().ToString(), i));
+			if (i != 4) {
+				StartCoroutine (CreateCard (drawCardsQueue.Dequeue ().ToString (), i));
+			} 
+			else {
+				StartCoroutine (CreateCard (13.ToString(), i));
+			}
 		}
 	}
 
@@ -182,37 +136,9 @@ public class GameSystem_Poker : MonoBehaviour {
 
 			yield return StartCoroutine (IE_MoveCard (p_touchCardPositionIndex));
 
-			endlessModeDrawCardCount++;
-			if (endlessModeDrawCardCount % 4 == 0) {
-				string[] _skillCards = new string[]{"14", "15", "16"};
-				drawCardIndex = UnityEngine.Random.Range (0, _skillCards.Length);
-				yield return StartCoroutine (CreateCard (_skillCards [drawCardIndex], GetCreateCardPositionIndex ()));
-			} 
-			else {
-				string[] _skillCards = new string[]{"10","1","2","3","4","5","6","7","8","9"};
-				drawCardIndex = UnityEngine.Random.Range (0, _skillCards.Length);
-				yield return StartCoroutine (CreateCard (_skillCards [drawCardIndex], GetCreateCardPositionIndex ()));
-			}
-
-			if (Game.endlessMode) {
-				if (IsAllTargetsComplete ()) {
-					print ("創造新的目標");
-					changeOperationCount += GlobalData.ENDLESS_MODE_COMPLETE_TARGET_ADD_changeOperationCount;
-					gameView.SetChangeOperationCountText (changeOperationCount);
-
-					CreateCompleteTarget_EndlessMode ();
-					gameView.ResetCompleteTargetEff ();
-				}
-			}
-			else {
-				if (IsAllTargetsComplete () && systemStatue != SystemStatue.Win) {
-					print ("勝利");
-					systemStatue = SystemStatue.Win;
-					bool _isGetStar = useTime < getStarTime ? true : false;
-					gameView.ShowWinUI (useTime, _isGetStar);
-					SaveData ();
-				}
-			}
+			string[] _skillCards = new string[]{"14", "15", "16"};
+			drawCardIndex = UnityEngine.Random.Range (0, _skillCards.Length);
+			yield return StartCoroutine (CreateCard (_skillCards [drawCardIndex], GetCreateCardPositionIndex ()));
 		}
 
 		systemStatue = SystemStatue.Idle;
@@ -221,33 +147,6 @@ public class GameSystem_Poker : MonoBehaviour {
 		
 	private void SaveData(){
 		PlayerData _playerData = PlayerData.Create ();
-
-		if (Game.endlessMode) {
-			float _bestTime = _playerData.endlessModeData.bestTime;
-			if (useTime > _bestTime) {
-				_playerData.endlessModeData.bestTime = useTime;
-			}
-
-			float _maxScore = _playerData.endlessModeData.maxScore;
-			if (endlessMode_GetScore > _maxScore) {
-				_playerData.endlessModeData.maxScore = endlessMode_GetScore;
-			}	
-		}
-		else{
-			float _bestTime = _playerData.levelDatas [Game.NOWLEVEL].BestTime;
-			if (_bestTime == 0)
-				_bestTime = 9999;
-
-			if (useTime < _bestTime) {
-				_playerData.levelDatas [Game.NOWLEVEL].BestTime = useTime;
-			}
-			_playerData.levelDatas [Game.NOWLEVEL].isComplete = true;
-
-			bool _isGetStar = useTime < getStarTime ? true : false;
-			if(_isGetStar){
-				_playerData.levelDatas [Game.NOWLEVEL].getStart = _isGetStar;
-			}
-		}
 
 		_playerData.Save();
 	}
@@ -370,41 +269,6 @@ public class GameSystem_Poker : MonoBehaviour {
 		}
 	}
 
-	private IEnumerator IE_Question(){
-		systemStatue = SystemStatue.Working;
-
-		for (int i = 0; i < cards.Count; i++) {
-			if (cards [i].GetCardType () == "Base") {
-				int _randomNumber = UnityEngine.Random.Range (0, 10);
-				cards[i].ResetCard(_randomNumber.ToString ());
-			}
-		}
-		yield return null;
-		systemStatue = SystemStatue.Idle;
-	}
-
-	private IEnumerator IE_Marvel(CardPoker p_card){
-		List<string> _cardsID = new List<string> ();
-		//先取所有卡牌的位置存放在容器內
-		for (int i = 0; i < cards.Count; i++) {
-			if (cards [i].GetCardType () != "Player" && cards[i] != p_card) {
-				_cardsID.Add (cards [i].GetCardID ());
-			}
-		}
-
-		//再將所有卡牌重容器內隨機取得一個新位置
-		for (int i = 0; i < cards.Count; i++) {
-			if (cards [i].GetCardType () != "Player" && cards[i] != p_card) {
-				int _index = UnityEngine.Random.Range (0, _cardsID.Count);
-				string _newCardID = _cardsID[_index];
-				cards [i].ResetCard (_newCardID);
-				_cardsID.RemoveAt (_index);
-			}
-		}
-
-		yield return null;
-	}
-
 	private bool IsNearby(int p_playerPositionIndex, int p_touchCardPositionIndex){
 		bool _isNearby = false;
 
@@ -417,89 +281,5 @@ public class GameSystem_Poker : MonoBehaviour {
 		}
 
 		return _isNearby;
-	}
-
-	public void OnChangeOperation(string p_Operation){
-		if (Game.endlessMode) {
-			if (changeOperationCount > 0) {
-				if (operationState != (OperationType)Enum.Parse (typeof(OperationType), p_Operation)) {
-					changeOperationCount--;
-					operationState = (OperationType)Enum.Parse (typeof(OperationType), p_Operation);
-					gameView.SetChangeOperationCountText (changeOperationCount);
-					gameView.SetOperationBtnActive (p_Operation);
-				}
-			}
-		}
-		else {
-			operationState = (OperationType)Enum.Parse (typeof(OperationType), p_Operation);
-			gameView.SetOperationBtnActive (p_Operation);
-		}
-	}
-
-
-	private bool IsAllTargetsComplete(){
-		for (int i = 0; i < IscompleteTargets.Length; i++) {
-			if (IscompleteTargets [i] == false) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	private void CreateCompleteTarget_EndlessMode(){
-		int _tagetCount = UnityEngine.Random.Range (1, 6);
-		string _targetRange = GlobalData.ENDLESS_MODE_TARGET_NUMBER_START + "~" + GlobalData.ENDLESS_MODE_TARGET_NUMBER_END;
-
-		List<int> _rangeGroup = new List<int> ();
-		print ("_targetRange : " + _targetRange);
-		if (_targetRange.Contains ("~")) {
-			string[] _aaa = Regex.Split (_targetRange, "~");
-			int _startNumber = int.Parse(_aaa[0]);
-			int _endNumber = int.Parse (_aaa [1]);
-
-			int _tempNumber = _startNumber;
-			while(_tempNumber <= _endNumber){
-				_rangeGroup.Add (_tempNumber++);
-			}
-		}
-		else{
-			string[] _targetGroup;
-			_targetGroup = Regex.Split (_targetRange, ",");
-
-			for (int i = 0; i < _targetGroup.Length; i++) {
-				_rangeGroup.Add (int.Parse(_targetGroup[i]));
-			}
-		}
-
-
-		completeTargets = new int[_tagetCount];
-		IscompleteTargets = new bool[_tagetCount];
-		for (int i = 0; i < completeTargets.Length; i++) {
-
-			int _index = UnityEngine.Random.Range (0, _rangeGroup.Count);
-			completeTargets [i] = _rangeGroup[_index];
-			_rangeGroup.RemoveAt (_index);
-
-		}
-
-		//重小排到大
-		for (int i = 0; i < completeTargets.Length-1; i++) {
-			for (int j = i + 1; j < completeTargets.Length; j++) {
-				if (completeTargets [i] > completeTargets [j]) {
-					int _temp = completeTargets [i];
-					completeTargets [i] = completeTargets [j];
-					completeTargets [j] = _temp;
-				}
-			}
-		}
-
-		gameView.InitCompleteTarget (completeTargets);
-	}
-
-	public void OnNextLevel(){
-		Game.NOWLEVEL++;
-		Game.endlessMode = false;
-		Game.LoadScene ("GameScene");
 	}
 }
