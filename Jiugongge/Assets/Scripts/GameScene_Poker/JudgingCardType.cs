@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
 
-public enum SuitType{RoyalFlush, FiveKind, STRFlush, FourKind, FullHourse, Flush, Straight, ThreeKind, TwoPair, Pair, HightCard};
+public enum SuitType{RoyalFlush=0, STRFlush, FourKind, FullHourse, Flush, Straight, ThreeKind, TwoPair, Pair, HightCard};
 public enum ColorType{C,D,H,S};
 
 public class JudgingCardType : MonoBehaviour {

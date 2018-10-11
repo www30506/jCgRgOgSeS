@@ -22,11 +22,11 @@ public class CardPoker: MonoBehaviour {
 	}
 
 	void Start () {
-		
+
 	}
-	
+
 	void Update () {
-		
+
 	}
 
 	public string GetCardID(){

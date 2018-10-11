@@ -45,7 +45,9 @@ public class GameSystem_Poker : MonoBehaviour {
 	}
 
 	private void ChangeNextCardTip(){
-		nextCard.ResetCard (drawCards_ID_List [0]);	
+		if(drawCards_ID_List.Count > 0){
+			nextCard.ResetCard (drawCards_ID_List [0]);	
+		}
 	}
 
 	private void InitDrawCardList(){
@@ -119,6 +121,9 @@ public class GameSystem_Poker : MonoBehaviour {
 	}
 
 	void Update () {
+		if(Input.GetKeyUp(KeyCode.Q)){
+			OnHitOutPoker();
+		}
 	}
 
 	public void BackToMenu(){
@@ -140,22 +145,102 @@ public class GameSystem_Poker : MonoBehaviour {
 		if (IsNearby (playerCard.GetPositionIndex (), p_touchCardPositionIndex)) {
 			CardPoker _card = GetCard (p_touchCardPositionIndex);
 
-			DoCardAction (_card);
+			//			DoCardAction (_card);
 
 			CopyCardToButtom (_card.GetCardID());
+
 			yield return StartCoroutine(IE_DestoryCard(p_touchCardPositionIndex));
 
 			yield return StartCoroutine (IE_MoveCard (p_touchCardPositionIndex));
 
 			yield return StartCoroutine (CreateCard (drawCards_ID_List[0], GetCreateCardPositionIndex ()));
-
 			ChangeNextCardTip ();
+			OnHitOutPoker();
+
+			if(HasAnySuitType() == false){
+				Debug.LogError("GameOver");
+				systemStatue = SystemStatue.Win;
+				yield break;
+			}
 		}
 
 		systemStatue = SystemStatue.Idle;
 		yield return null;
 	}
-		
+
+	public void OnHitOutPoker(){
+		int _length=0;
+
+		for(int i=0; i<buttomCards.Length; i++){
+			if (buttomCards[i].GetCardID () != "12") {
+				_length++;
+			}
+		}
+
+		string[] _cardsID = new string[_length];
+		for(int i=0; i<_cardsID.Length; i++){
+			_cardsID[i] = buttomCards[i].GetCardValue();
+		}
+
+		judgingCardType.SetPokerCards(_cardsID);
+		SuitType _suitType = judgingCardType.GetSuitType();
+		string _suitCards = judgingCardType.GetSuitPokerCards();
+
+		if(_suitType != SuitType.HightCard){
+
+			score += GetScore(_suitType, _suitCards);
+			gameView.SetScore(score);
+
+			DestoryButtomSuitCards(_suitCards);
+			SortButtomCards();
+		}
+		else{
+			print("沒有形成牌型");
+		}
+	}
+
+	private int GetScore(SuitType p_suitType, string p_suitCards){
+		string[] _cards = Regex.Split(p_suitCards, ",");
+		int _Score = 0;
+		for(int i=0; i<_cards.Length; i++){
+			string[] _number = Regex.Split(_cards[i], "_");
+			_Score += _number[1]=="1"? 20: int.Parse(_number[1]);
+		}
+
+		_Score = _Score * GlobalData.ScoreMagnification[(int)p_suitType];
+		return _Score;
+	}
+
+	private void DestoryButtomSuitCards(string p_suitCards){
+		string[] _cards = Regex.Split(p_suitCards, ",");
+		for(int i=0; i< _cards.Length; i++){
+			for(int j=0; j< buttomCards.Length; j++){
+				if(_cards[i] == buttomCards[j].GetCardValue()){
+					buttomCards[j].ResetCard("12");
+				}
+			}
+		}
+	}
+
+
+	private void SortButtomCards(){
+		for(int i=0;i<buttomCards.Length;i++){
+			if(buttomCards[i].GetCardID() == "12"){
+				for(int j=i; j<buttomCards.Length-1; j++){
+					buttomCards[j].ResetCard(buttomCards[j+1].GetCardID());
+				}
+			}
+		}
+	}
+
+	private bool HasAnySuitType(){
+		bool _HasAnySuitType = true;
+		if(drawCards_ID_List.Count <2){
+			_HasAnySuitType = false;
+		}
+		return _HasAnySuitType;
+	}
+
 	private void CopyCardToButtom(string p_cardID){
 		int _copyIndex = -1;
 
@@ -163,7 +248,6 @@ public class GameSystem_Poker : MonoBehaviour {
 		for (int i = 0; i < buttomCards.Length; i++) {
 			if (buttomCards [i].GetCardID () == "12") {
 				_copyIndex = i;
-//				print ("複製卡片ID : " + p_cardID);
 				break;
 			}
 		}
@@ -288,9 +372,6 @@ public class GameSystem_Poker : MonoBehaviour {
 	private void DoCardAction(CardPoker p_card){
 		switch (p_card.GetCardType()) {
 		case "Poker":
-			//將排放入底下
-			//做判斷
-			//
 			break;
 		case "Action":
 			break;
