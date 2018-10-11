@@ -27,6 +27,7 @@ public class GameSystem_Poker : MonoBehaviour {
 	[SerializeField]private CardPoker[] buttomCards;
 	[SerializeField]private CardPoker nextCard;
 	private int prePlayerPositionIndex;
+	[SerializeField]private int combo = 1;
 
 	void Start () {
 		InitDrawCardList ();
@@ -123,6 +124,10 @@ public class GameSystem_Poker : MonoBehaviour {
 	void Update () {
 		if(Input.GetKeyUp(KeyCode.Q)){
 			OnHitOutPoker();
+			if(HasAnySuitType() == false){
+				Debug.LogError("GameOver");
+				systemStatue = SystemStatue.Win;
+			}
 		}
 	}
 
@@ -155,13 +160,13 @@ public class GameSystem_Poker : MonoBehaviour {
 
 			yield return StartCoroutine (CreateCard (drawCards_ID_List[0], GetCreateCardPositionIndex ()));
 			ChangeNextCardTip ();
-			OnHitOutPoker();
+//			OnHitOutPoker();
 
-			if(HasAnySuitType() == false){
-				Debug.LogError("GameOver");
-				systemStatue = SystemStatue.Win;
-				yield break;
-			}
+//			if(HasAnySuitType() == false){
+//				Debug.LogError("GameOver");
+//				systemStatue = SystemStatue.Win;
+//				yield break;
+//			}
 		}
 
 		systemStatue = SystemStatue.Idle;
@@ -193,6 +198,7 @@ public class GameSystem_Poker : MonoBehaviour {
 
 			DestoryButtomSuitCards(_suitCards);
 			SortButtomCards();
+			combo++;
 		}
 		else{
 			print("沒有形成牌型");
@@ -207,7 +213,7 @@ public class GameSystem_Poker : MonoBehaviour {
 			_Score += _number[1]=="1"? 20: int.Parse(_number[1]);
 		}
 
-		_Score = _Score * GlobalData.ScoreMagnification[(int)p_suitType];
+		_Score = _Score * GlobalData.ScoreMagnification[(int)p_suitType] * combo;
 		return _Score;
 	}
 
@@ -261,6 +267,7 @@ public class GameSystem_Poker : MonoBehaviour {
 			}
 
 			buttomCards [buttomCards.Length - 1].ResetCard (p_cardID);
+			combo =1;
 		} 
 		else {
 			buttomCards [_copyIndex].ResetCard (p_cardID);
