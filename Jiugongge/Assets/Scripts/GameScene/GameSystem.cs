@@ -563,7 +563,7 @@ public class GameSystem : MonoBehaviour {
 
 		for (int i = 0; i < cards.Count; i++) {
 			if (cards [i].GetCardType () == "Base") {
-				int _randomNumber = UnityEngine.Random.Range (0, 10);
+				int _randomNumber = UnityEngine.Random.Range (1, 11);
 				cards[i].ResetCard(_randomNumber.ToString ());
 			}
 		}
