@@ -301,7 +301,6 @@ public class GameSystem : MonoBehaviour {
 			systemStatue = SystemStatue.Loss;
 
 			if (Game.endlessMode) {
-				endlessMode_GetScore = endlessMode_CompleteCount;
 				gameView.ShowendlessModeGameOverUI(endlessMode_GetScore , useTime);
 				SaveData ();
 			} 
@@ -633,6 +632,8 @@ public class GameSystem : MonoBehaviour {
 				if (Game.endlessMode) {
 					timeLeft += GlobalData.ENDLESS_MODE_COMPLETE_ADD_TIME;
 					gameView.SetActionValue (timeLeft);
+					endlessMode_GetScore += completeTargets [i];
+					print ("目前分數 " + endlessMode_GetScore);
 					endlessMode_CompleteCount++;
 				}
 			}
