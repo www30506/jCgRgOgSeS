@@ -121,7 +121,7 @@ public class Card: MonoBehaviour {
 		}
 	}
 
-	public void SetPosition(int p_positionIndex){
+	private void SetPosition(int p_positionIndex){
 		positionIndex = p_positionIndex;
 
 		Vector3 _newPosition = Vector3.zero;
