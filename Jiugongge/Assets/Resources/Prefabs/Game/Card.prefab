@@ -19,11 +19,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4726484478706942}
-  - component: {fileID: 114981049277955552}
   - component: {fileID: 61328379287699288}
   - component: {fileID: 114120746839487712}
+  - component: {fileID: 114675551251468322}
   m_Layer: 0
-  m_Name: Card
+  m_Name: CardPoker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,7 +174,7 @@ TextMesh:
   m_Anchor: 4
   m_Alignment: 1
   m_TabSize: 4
-  m_FontSize: 105
+  m_FontSize: 60
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
@@ -220,7 +220,7 @@ MonoBehaviour:
       PublicKeyToken=null
   Form: {x: 1, y: 1, z: 1}
   To: {x: 0, y: 0, z: 0}
---- !u!114 &114981049277955552
+--- !u!114 &114675551251468322
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -228,12 +228,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1051111211617714}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5599dab9c3d4e2e41a51d8eb629359f8, type: 3}
+  m_Script: {fileID: 11500000, guid: fa9f6db03cf3a7543afbea2a514d6d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_SpriteRenderer: {fileID: 212923176841284880}
   positionIndex: 0
-  cardID: 9
+  cardID: 
   m_value: 0
   m_type: 
   m_name: 

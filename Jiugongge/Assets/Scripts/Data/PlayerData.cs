@@ -6,21 +6,8 @@ using System.Text;
 
 [System.Serializable]
 public class PlayerData{
-	[System.Serializable]public class LevelData{
-		public bool getStart = false; //是否得到星星
-		public float BestTime = 0; //最快時間
-		public bool isComplete = false; //是否完成
-	}
-
-	[System.Serializable]public class EndlessModeData{
-		public float bestTime = 0;
-		public int maxScore = 0;
-	}
-
 	/********	Data	********/
 	public string language = "TraditionalChinese";//選擇的語言
-	public LevelData[] levelDatas = new LevelData[500];
-	public EndlessModeData endlessModeData;
 	public bool isShowBeginnerGuide = false;
 
 	/*********************/
