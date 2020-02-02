@@ -1,0 +1,4 @@
+[define]name	編號	名稱	敘述	血量	攻擊	防禦
+[define]type	string	string	string	int	int	int
+key	ID	Name	Description	HP	ATK	DEF
+0	0	數字0		100	10	1

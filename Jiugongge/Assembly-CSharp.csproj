@@ -78,7 +78,11 @@
     <Compile Include="Assets\CPlugins\UGUI_UTween\Script\UTweenSize.cs" />
     <Compile Include="Assets\Scripts\Data\GameData.cs" />
     <Compile Include="Assets\Scripts\Data\PlayerData.cs" />
-    <Compile Include="Assets\Scripts\GameScene\Card.cs" />
+    <Compile Include="Assets\Scripts\GameScene\Card\Card_Item.cs" />
+    <Compile Include="Assets\Scripts\GameScene\Card\Card_Monster.cs" />
+    <Compile Include="Assets\Scripts\GameScene\Card\Card_Player.cs" />
+    <Compile Include="Assets\Scripts\GameScene\Card\Card_Trap.cs" />
+    <Compile Include="Assets\Scripts\GameScene\Card\CardBase.cs" />
     <Compile Include="Assets\Scripts\GameScene\GameController.cs" />
     <Compile Include="Assets\Scripts\GameScene\GameUI.cs" />
     <Compile Include="Assets\Scripts\InitScene\InitSystem.cs" />
@@ -89,8 +93,12 @@
     <Compile Include="Assets\Scripts\MenuScene\SettingPage.cs" />
     <Compile Include="Assets\Scripts\Other\Game.cs" />
     <Compile Include="Assets\Scripts\Other\GlobalData.cs" />
-    <None Include="Assets\StreamingAssets\Data\CardTable.txt" />
+    <Compile Include="Assets\Scripts\Other\PublicEnum.cs" />
+    <None Include="Assets\StreamingAssets\Data\TrapTable.txt" />
+    <None Include="Assets\StreamingAssets\Data\PlayerTable.txt" />
+    <None Include="Assets\StreamingAssets\Data\MonsterTable.txt" />
     <None Include="Assets\StreamingAssets\Data\Example_ParseData\Example.txt" />
+    <None Include="Assets\StreamingAssets\Data\ItemTable.txt" />
     <None Include="Assets\Resources\PreventDeletion.txt" />
     <None Include="Assets\CPlugins\PageManerger\Version.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">

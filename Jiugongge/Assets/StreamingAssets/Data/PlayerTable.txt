@@ -1,0 +1,4 @@
+[define]name	編號	名稱	數值
+[define]type	string	string	string
+key	ID	Name	Value
+0	0	數字0	0
