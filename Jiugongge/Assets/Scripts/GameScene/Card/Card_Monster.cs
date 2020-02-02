@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Card_Monster : CardBase
 {
-    void Start()
-    {
-        
+    protected override void M_Init() {
+        print("怪物初始化");
     }
 
-    void Update()
-    {
-        
+    protected override void M_Update() {
+
     }
 }

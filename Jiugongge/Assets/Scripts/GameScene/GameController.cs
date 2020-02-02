@@ -15,12 +15,16 @@ public class GameController : MonoBehaviour {
     }
 
     private void InitGame(){
-        for(int i=0; i<9; i++) {
-            if (i == 4) {
-                CreatePlayer(i);
-            }
-            else {
-                CreateMonster(i);
+        for(int i=0; i< GameData.column; i++) {
+            for(int j=0; j< GameData.Row; j++) {
+                int _index = i * GameData.Row + j;
+                //玩家位置
+                if (_index == 4) {
+                    CreatePlayer(_index);
+                }
+                else {
+                    CreateMonster(_index);
+                }
             }
         }
     }
@@ -55,6 +59,10 @@ public class GameController : MonoBehaviour {
 
     public void OnCardTouch(int p_touchCardPositionIndex) {
         
+    }
+
+    private void ShowCanMoveTip() {
+
     }
 
     void Update() {

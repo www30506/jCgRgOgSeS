@@ -15,10 +15,12 @@ public class CardBase : MonoBehaviour {
     public delegate void TouchCardHandler(int p_touchCardPositionIndex);
     protected event TouchCardHandler TouchCardEvent;
     protected UTweenScale destoryEff;
+    private BoxCollider2D boxCollider2D;
 
     void Awake() {
         thisTransform = this.transform;
         destoryEff = this.GetComponent<UTweenScale>();
+        boxCollider2D = this.GetComponent<BoxCollider2D>();
     }
 
     void Start() {
@@ -26,6 +28,14 @@ public class CardBase : MonoBehaviour {
     }
 
     void Update() {
+        
+    }
+
+    protected virtual void M_Update() {
+
+    }
+
+    protected virtual void M_Init() {
 
     }
 
@@ -50,12 +60,23 @@ public class CardBase : MonoBehaviour {
 
         //改變圖片現在沒用到
         //ChangeSprite(p_cardID);
+        SetCardSize();
         SetPosition(p_positionIndex);
+
 #if UNITY_EDITOR
         this.gameObject.name = p_cardID;
 #endif
 
         TouchCardEvent += p_onTouchCardEvent;
+        M_Init();
+    }
+
+    private void SetCardSize() {
+        //標準是3 * 3 
+        float _x = 3 / (float)GameData.Row;
+        float _y = 3 / (float)GameData.column;
+
+        this.transform.localScale = new Vector3(_x, _y, 1);
     }
 
     public void ResetCard(string p_cardID) {
@@ -77,37 +98,10 @@ public class CardBase : MonoBehaviour {
     protected void SetPosition(int p_positionIndex) {
         positionIndex = p_positionIndex;
 
-        Vector3 _newPosition = Vector3.zero;
-        switch (p_positionIndex) {
-            case 0:
-            _newPosition = new Vector3(-2, 3, 0);
-            break;
-            case 1:
-            _newPosition = new Vector3(0, 3, 0);
-            break;
-            case 2:
-            _newPosition = new Vector3(2, 3, 0);
-            break;
-            case 3:
-            _newPosition = new Vector3(-2, 0, 0);
-            break;
-            case 4:
-            _newPosition = new Vector3(0, 0, 0);
-            break;
-            case 5:
-            _newPosition = new Vector3(2, 0, 0);
-            break;
-            case 6:
-            _newPosition = new Vector3(-2, -3, 0);
-            break;
-            case 7:
-            _newPosition = new Vector3(0, -3, 0);
-            break;
-            case 8:
-            _newPosition = new Vector3(2, -3, 0);
-            break;
-        }
-        thisTransform.localPosition = _newPosition;
+        float _x = -3 + this.transform.localScale.x + ((p_positionIndex % GameData.Row) * this.transform.localScale.x * 2);
+        float _y = 4 - this.transform.localScale.y - ((p_positionIndex / GameData.Row) * this.transform.localScale.y * 3);
+
+        thisTransform.localPosition = new Vector3(_x, _y, 1);
     }
 
     public IEnumerator IE_SetPosition(int p_positionIndex) {

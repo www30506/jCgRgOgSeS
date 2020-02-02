@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Card_Player : CardBase
 {
-    void Start()
-    {
-        
+    protected override void M_Init() {
+        print("玩家初始化");
     }
 
-    void Update()
-    {
-        
+    protected override void M_Update() {
+
     }
 }
