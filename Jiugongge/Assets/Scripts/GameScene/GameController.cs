@@ -61,9 +61,17 @@ public class GameController : MonoBehaviour {
     }
 
     public void OnCardTouch(CardBase p_touchCard) {
-        print("【Controller】Touch");
+        print("【Controller】Touch Card");
         if (IsValidClick(p_touchCard.GetPositionIndex())) {
-            print("【有效】");
+            if(p_touchCard.GetCardType() == CardType.Item) {
+                GetItem();
+            }
+            else if (p_touchCard.GetCardType() == CardType.Monster) {
+                HitMonster();
+            }
+            else if (p_touchCard.GetCardType() == CardType.Trap) {
+                TriggerTrap();
+            }
         }
         else {
             ShowValidTip();
@@ -91,6 +99,18 @@ public class GameController : MonoBehaviour {
         }
 
         return false;
+    }
+
+    private void HitMonster() {
+
+    }
+
+    private void GetItem() {
+
+    }
+
+    private void TriggerTrap() {
+
     }
 
     private void ShowValidTip() {

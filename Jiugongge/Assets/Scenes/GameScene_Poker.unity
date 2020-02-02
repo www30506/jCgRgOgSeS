@@ -356,6 +356,7 @@ MonoBehaviour:
   cardPrefab_Trap: {fileID: 1051111211617714, guid: 9c49bfe2d32954db2aa6f5bc6391e454,
     type: 3}
   cardParnet: {fileID: 1067408571}
+  player: {fileID: 0}
 --- !u!1 &1067408570
 GameObject:
   m_ObjectHideFlags: 0

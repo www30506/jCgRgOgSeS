@@ -60,19 +60,17 @@ public class CardBase : MonoBehaviour {
         }
 
         touchType = TouchType.Idle;
-        print("【卡片】放開 類型 ： " + m_type.ToString() + "  , cardID : " + cardID + "  , PositionIndex : " + positionIndex);
         TouchCardEvent.Invoke(this);
     }
 
 
     private void OnMouseDown() {
-        print("【卡片】 按下 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
         touchTime = 0;
         touchType = TouchType.Down;
     }
 
     private void OnMouseLongDown() {
-        print("【卡片】 長按 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
+        print("【卡片】 長按 ");
     }
 
     public void Init(string p_cardID, int p_positionIndex, TouchCardHandler p_onTouchCardEvent) {
