@@ -12,10 +12,13 @@ public class CardBase : MonoBehaviour {
     [SerializeField] protected TextMesh m_valueTextMesh;
 
     protected Transform thisTransform;
-    public delegate void TouchCardHandler(int p_touchCardPositionIndex);
+    public delegate void TouchCardHandler(CardBase p_touchCard);
     protected event TouchCardHandler TouchCardEvent;
     protected UTweenScale destoryEff;
     private BoxCollider2D boxCollider2D;
+    private float touchTime = 0;
+    private enum TouchType { Idle, Down, Up};
+    private TouchType touchType = TouchType.Idle;
 
     void Awake() {
         thisTransform = this.transform;
@@ -28,7 +31,15 @@ public class CardBase : MonoBehaviour {
     }
 
     void Update() {
-        
+        if(touchType == TouchType.Down) {
+            touchTime += Time.deltaTime;
+            if(touchTime > 2) {
+                touchType = TouchType.Idle;
+                touchTime = 0;
+                OnMouseLongDown();
+            }
+        }
+        M_Update();
     }
 
     protected virtual void M_Update() {
@@ -43,21 +54,29 @@ public class CardBase : MonoBehaviour {
         return cardID;
     }
 
-    public void OnMouseUp() {
-        print("【點擊卡片】類型 ： " + m_type.ToString() + "  , cardID : " + cardID + "  , PositionIndex : " + positionIndex);
-        TouchCardEvent.Invoke(positionIndex);
+    private void OnMouseUp() {
+        if(touchType != TouchType.Down) {
+            return;
+        }
+
+        touchType = TouchType.Idle;
+        print("【卡片】放開 類型 ： " + m_type.ToString() + "  , cardID : " + cardID + "  , PositionIndex : " + positionIndex);
+        TouchCardEvent.Invoke(this);
     }
 
 
-    public void OnMouseDown() {
-        //print("【卡片按下】 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
+    private void OnMouseDown() {
+        print("【卡片】 按下 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
+        touchTime = 0;
+        touchType = TouchType.Down;
+    }
+
+    private void OnMouseLongDown() {
+        print("【卡片】 長按 cardID : " + cardID + "  , PositionIndex : " + positionIndex);
     }
 
     public void Init(string p_cardID, int p_positionIndex, TouchCardHandler p_onTouchCardEvent) {
         cardID = p_cardID;
-
-        //m_name = PD.DATA ["CardTable"] [p_cardID] ["Name"].ToString();
-
         //改變圖片現在沒用到
         //ChangeSprite(p_cardID);
         SetCardSize();
@@ -79,14 +98,6 @@ public class CardBase : MonoBehaviour {
         this.transform.localScale = new Vector3(_x, _y, 1);
     }
 
-    public void ResetCard(string p_cardID) {
-        cardID = p_cardID;
-
-        //改變圖片現在沒用到
-        //ChangeSprite(p_cardID);
-
-    }
-
     public void ResetPositionIndex(int p_positionIndex) {
         SetPosition(p_positionIndex);
     }
@@ -102,53 +113,6 @@ public class CardBase : MonoBehaviour {
         float _y = 4 - this.transform.localScale.y - ((p_positionIndex / GameData.Row) * this.transform.localScale.y * 3);
 
         thisTransform.localPosition = new Vector3(_x, _y, 1);
-    }
-
-    public IEnumerator IE_SetPosition(int p_positionIndex) {
-        positionIndex = p_positionIndex;
-
-        Vector3 _newPosition = Vector3.zero;
-        switch (p_positionIndex) {
-            case 0:
-            _newPosition = new Vector3(-2, 2, 0);
-            break;
-            case 1:
-            _newPosition = new Vector3(0, 2, 0);
-            break;
-            case 2:
-            _newPosition = new Vector3(2, 2, 0);
-            break;
-            case 3:
-            _newPosition = new Vector3(-2, 0, 0);
-            break;
-            case 4:
-            _newPosition = new Vector3(0, 0, 0);
-            break;
-            case 5:
-            _newPosition = new Vector3(2, 0, 0);
-            break;
-            case 6:
-            _newPosition = new Vector3(-2, -2, 0);
-            break;
-            case 7:
-            _newPosition = new Vector3(0, -2, 0);
-            break;
-            case 8:
-            _newPosition = new Vector3(2, -2, 0);
-            break;
-        }
-
-        Vector3 _prePosition = thisTransform.localPosition;
-        Vector3 _distance = _newPosition - _prePosition;
-        float _tempTime = 0;
-
-        while (_tempTime < 0.3f) {
-            thisTransform.localPosition = _prePosition + (_distance * _tempTime / 0.3f);
-            _tempTime += Time.deltaTime;
-            yield return null;
-        }
-
-        thisTransform.localPosition = _newPosition;
     }
 
     public int GetPositionIndex() {
